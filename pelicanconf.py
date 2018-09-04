@@ -20,7 +20,7 @@ import os
 import json
 import markdown
 
-AUTHOR = 'Your Name Here'
+AUTHOR = 'Reilly Raab'
 TIMEZONE = 'UTC'
 DEFAULT_LANG = 'en'
 
