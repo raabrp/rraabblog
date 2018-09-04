@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ AUTHOR }}{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="theme/css/page.css">
+{% endblock style %}
+
+{% block content %}
+<header>
+    <h1>
+        {{ AUTHOR }}
+    </h1>
+</header>
+<article class="index">
+    <h2>
+        Articles
+    </h2>
+    <ul>
+        {% for article in articles | sort(attribute='date', reverse=True) %}
+        <li>
+            <p>
+                <span style="font-family: monospace;">
+                    ({{ article.date.strftime('%Y %b %d') }})
+                </span>
+                <a href="{{ article.slug }}.html">
+                    {{ article.title }}
+                </a>
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>
+        Pages
+    </h2>
+    <ul>
+        {% for page in pages %}
+        <li>
+            <p>
+                <a href="{{ page.slug }}.html">
+                    {{ page.title }}
+                </a>
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+</article>
+{% endblock %}

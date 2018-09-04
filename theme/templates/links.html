@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Links{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="theme/css/page.css">
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/dc@3/dc.css" />
+<style>
+ main { max-width: unset; }
+</style>
+{% endblock style %}
+
+
+{% block content %}
+<header>
+    <h1>
+        All External Links
+    </h1>
+</header>
+<article style="font-size: 80%;">
+    <table class="sortable">
+        <tr>
+        <th>
+            Subdomain
+        </th>
+        <th>
+            Domain
+        </th>
+        <th>
+            Page
+        </th>
+        <th>
+            Document
+        </th>
+        <th>
+            Context
+        </th>
+        </tr>
+        {% for a in (articles + pages) | sum(attribute='links', start=[]) |
+                                         sort(attribute='domain') %}
+        <tr>
+            <td>
+                {{ a.subdomain or '-' }}
+            </td>
+            <td>
+                {{ a.domain }}
+            </td>
+            <td>
+                <a href="{{ a.href }}">{{ a.path or "None"}}</a>
+            </td>
+            <td>
+                <a href="{{ a.article_slug }}.html">
+                    {{ a.article_title }}
+                </a>
+            </td>
+            <td>
+                {{ a.context }} <a href="{{ a.article_slug }}.html#{{ a.id }}">{{ a.text }}</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</article>
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock %}

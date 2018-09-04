@@ -1,0 +1,12 @@
+/*
+ * Different css for index.html and pages
+ * (Layout and positioning)
+ */
+
+/* /\* center <main> after it was shifted by main.css for TOC *\/ */
+/* @media (min-width: 1200px) { */
+/*     main { */
+/*         margin: auto; */
+/*         left: 0; */
+/*     } */
+/* } */

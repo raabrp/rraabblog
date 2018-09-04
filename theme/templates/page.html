@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="theme/css/page.css">
+{% endblock style %}
+
+{% block content %}
+<header>
+    <h1>
+        {{ page.title }}
+    </h1>
+</header>
+<article>
+    {{ page.content }}
+</article>
+{% endblock %}

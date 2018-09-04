@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <title>
+      {% block title %}{{ SITENAME }}{% endblock title %}
+    </title>
+
+    <!-- CSS for Layout -->
+    <link rel="stylesheet" type="text/css" href="theme/css/katex.min.css">
+    <link rel="stylesheet" type="text/css" href="theme/css/charts.css">
+    <link rel="stylesheet" type="text/css" href="theme/css/decorations.css">
+    <link rel="stylesheet" type="text/css" href="theme/css/interactive.css">
+    <link rel="stylesheet" type="text/css" href="theme/css/main.css">
+
+    <!-- CSS for Colors -->
+    {% for theme in JINJA_INJECTED['theme_names'][::-1] %}
+    <link rel="stylesheet" type="text/css" id="{{ theme }}-theme-css"
+          class="color-css" href="theme/css/color-{{ theme }}.css">
+    {% endfor %}
+
+    {% if REMOTE_FONT_URL %}
+    <!--
+    The google fonts API nominally minimizes data collection
+    https://developers.google.com/fonts/faq
+    #what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
+
+    {{ REMOTE_FONT_URL }}
+    -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Raleway:600i|Roboto">
+    {% endif %}
+
+    <!-- JS for Color Theming -->
+    <script type="text/javascript">
+     /*
+      * Run this early, since it will create an undesiresable flash of color
+      * if delayed. It seems that the fastest way to get the correct colors
+      * is by including a <link> for each theme, causing them to be loaded in
+      * parallel, with marginal increased delay until script execution.
+      *
+      * The alternative is waiting to load the correct colors until after
+      * script execution -- which is delayed by loading the initial
+      * links anyway -- then *also* waiting for the new resource to load
+      * *after* script execution, resulting in almost twice the delay.
+      */
+
+     function set_theme(val) {
+         var color_links = document.getElementsByClassName('color-css');
+         for (var i=0; i < color_links.length; i++) {
+             var link = color_links[i];
+             if (link.attributes['id'].value == (val + '-theme-css')) {
+                 link.href = 'theme/css/color-' + val + '.css';
+             } else {
+                 link.removeAttribute('href');
+             }
+         }
+         try {
+             localStorage['theme'] = val;
+         } catch (e) {
+             ;
+         }
+     }
+     try {
+         var stored = localStorage['theme'];
+         if (stored && (stored != 'undefined'))  {
+             set_theme(stored);
+         }
+     } catch (e) {
+         ;
+     }
+    </script>
+
+    {% block style %}
+    {% endblock style %}
+
+    <!-- Pelican variable injection -->
+    <script type="text/javascript">{{ INLINE_JS }}</script>
+
+    <!-- Main JavaScript functions -->
+    <script src="theme/js/main.js"></script>
+
+  </head>
+
+  <body>
+    <main>
+      <menu>
+        <!-- The checkbox hack -->
+        <input type="checkbox" id="hamburger-checkbox">
+        <label for="hamburger-checkbox">
+          <div id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span>MENU</span>
+          </div>
+        </label>
+        <nav>
+          <ul>
+            <li>
+              <p>Links</p>
+              <ul>
+                <li>
+                  <a href="index.html">Home</a>
+                </li>
+                {% for page in pages %}
+                <li>
+                  <a href="{{ page.slug }}.html">
+                    {{ page.title }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            <!-- Unhidden if JavaScript enabled -->
+            <li id="theme-select" style="display: none;">
+              <p>Select Colors</p>
+              <ul>
+                {% for theme in JINJA_INJECTED['theme_names'] %}
+                <li>
+                  <a class="theme-selector" value="{{ theme }}">
+                    {{ theme.replace('-', ' ').capitalize() }}
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </menu>
+
+
+      {% block content %}
+      {% endblock content %}
+    </main>
+
+    {% block script %}
+    {% endblock script %}
+  </body>
+
+</html>
