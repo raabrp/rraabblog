@@ -6,10 +6,10 @@ Static website generation from markdown.
 
 ```
 .
-├── content         Your content goes here
-├── public          Generated files are put here
-├── plugins         Python files for processing and manipulating content
-├── theme           HTML templates, Javascript, and CSS
+├── /content         Your content goes here
+├── /public          Generated files are put here
+├── /plugins         Python files for processing and manipulating content
+├── /theme           HTML templates, Javascript, and CSS
 ├── run.sh          Shell script to generate files and serve locally
 ├── pelicanconf.py  Contains basic settings for pelican
 ├── readme.md       You're reading it now
