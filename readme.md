@@ -45,7 +45,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 
 * Fork and clone the repo
 
-    * Fork this repo.
+    * [Fork](https://github.com/login?return_to=%2Fraabrp%2Frraabblog) this repo.
 
     * Clone the repo locally
     
