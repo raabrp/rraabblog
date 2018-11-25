@@ -12,7 +12,6 @@ Static website generation from markdown.
 ├── /plugins        Python files for processing and manipulating content
 ├── /theme          HTML templates, Javascript, and CSS
 ├── .gitignore      List of files ignored by git
-├── .gitmodules     Allows treating `/public` as its own git repo
 ├── licence.txt     MIT licence
 ├── pelicanconf.py  Contains basic settings for pelican
 ├── readme.md       You're reading it now
