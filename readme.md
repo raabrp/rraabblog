@@ -68,9 +68,6 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 Initialize `/public` as a git repository to be hosted online (e.g. with [github 
 pages](https://pages.github.com))
 
-Edit `.gitmodules` to specify the remote location of the `/public` repository
-(e.g. "https://github.com/<your_username>/raabrp.github.io.git")
-
 ### Custom Domains
 
 See https://reillyraab.com/about.html for how I've set things up for myself in
