@@ -75,10 +75,8 @@ pages](https://pages.github.com))
 
 See https://reillyraab.com/about.html for how I've set things up for myself in
 terms of hosting with my own domain name. A technical step not mentioned there 
-is the inclusion of a file called `CNAME` in the `/public` directory/repository
-which states the name of my domain. Reference
-https://github.com/raabrp/raabrp.github.io for the contents of my own `/public`
-directory/repository.
+is the inclusion of a file called `CNAME` in `/public` (containing only the text
+`reillyraab.com`). See https://en.wikipedia.org/wiki/CNAME_record
 
 # Usage
 
