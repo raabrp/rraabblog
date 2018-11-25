@@ -47,7 +47,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
         sudo npm install -g katex d3 jsdom light-server
 
     Personal note: I had to make sure to include
-        `~/.local/bin` in my PATH and
+        `~/.local/bin` in my PATH and set
         `/usr/lib/node_modules/` as my NODE_PATH
 
 * Fork and clone the repo
