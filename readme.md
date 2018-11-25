@@ -8,7 +8,7 @@ Static website generation from markdown.
 .
 ├── /content        Your content goes here (ignored by git)
 ├── /drafts         Drafts of content (not turned into HTML; ignored by git) 
-├── /public         Generated HTML files are put here
+├── /public         Generated HTML files are put here (ignored by this repo)
 ├── /plugins        Python files for processing and manipulating content
 ├── /theme          HTML templates, Javascript, and CSS
 ├── .gitignore      List of files ignored by git
