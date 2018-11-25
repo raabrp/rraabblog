@@ -73,10 +73,11 @@ pages](https://pages.github.com))
 
 ### Custom Domains
 
-See https://reillyraab.com/about.html for how I've set things up for myself in
-terms of hosting with my own domain name. A technical step not mentioned there 
-is the inclusion of a file called `CNAME` in `/public` (containing only the text
-`reillyraab.com`). See https://en.wikipedia.org/wiki/CNAME_record
+See https://reillyraab.com/about.html#technical for how I've set things up for
+myself in terms of hosting with my own domain name. A technical step not 
+mentioned there is the inclusion of a file called `CNAME` in `/public` 
+(containing only the text `reillyraab.com`). See 
+[CNAME](https://en.wikipedia.org/wiki/CNAME_record)
 
 # Usage
 
