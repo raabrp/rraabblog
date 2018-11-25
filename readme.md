@@ -1,6 +1,9 @@
-# Static-Website
+# Static Website Generation
 
-Static website generation from markdown.
+Static website generation from markdown using Pelican with a few custom 
+extensions. Currently configured to generate a website in a subdirectory called
+`public` which is its own git repo set up as my "github pages" 
+(https://github.com/raabrp/raabrp.github.io).
 
 **Repo Contents:**
 
