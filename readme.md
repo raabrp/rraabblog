@@ -47,6 +47,10 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
         pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
         sudo npm install -g katex d3 jsdom light-server
 
+    Personal note: I had to make sure to include
+        `~/.local/bin` in my PATH and
+        `/usr/lib/node_modules/` as my NODE_PATH
+
 * Fork and clone the repo
 
     * [Fork](https://github.com/login?return_to=%2Fraabrp%2Frraabblog) this repo.
