@@ -6,14 +6,18 @@ Static website generation from markdown.
 
 ```
 .
-├── /content         Your content goes here
-├── /public          Generated files are put here
-├── /plugins         Python files for processing and manipulating content
-├── /theme           HTML templates, Javascript, and CSS
-├── run.sh          Shell script to generate files and serve locally
+├── /content        Your content goes here (ignored by git)
+├── /drafts         Drafts of content (not turned into HTML; ignored by git) 
+├── /public         Generated HTML files are put here
+├── /plugins        Python files for processing and manipulating content
+├── /theme          HTML templates, Javascript, and CSS
+├── .gitignore      List of files ignored by git
+├── .gitmodules     Allows treating `/public` as its own git repo
+├── licence.txt     MIT licence
 ├── pelicanconf.py  Contains basic settings for pelican
 ├── readme.md       You're reading it now
-└── .gitignore      List of files ignored by git
+├── run.sh          Shell script to generate files and serve locally
+└── todo.md         Plans for the project
 ```
 
 # Setup
@@ -54,18 +58,38 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 * Make `run.sh` executable
 
         chmod +x <path-to-local-copy-of-repository>/run.sh
+        
+## Configuration
+
+Initialize `/public` as a git repository to be hosted online (e.g. with [github 
+pages](https://pages.github.com))
+
+Edit `.gitmodules` to specify the remote location of the `/public` repository
+(e.g. "https://github.com/<your_username>/raabrp.github.io.git")
+
+### Custom Domains
+
+See https://reillyraab.com/about.html for how I've set things up for myself in
+terms of hosting with my own domain name. A technical step not mentioned there 
+is the inclusion of a file called `CNAME` in the `/public` directory/repository
+which states the name of my domain. Reference
+https://github.com/raabrp/raabrp.github.io for the contents of my own `/public`
+directory/repository.
 
 # Usage
 
-* run `run.sh` in the repo root
+* run `./run.sh` in the repo root
 * edit the `content` directory and see auto-refreshed results in the browser
-* [save changes](https://www.atlassian.com/git/tutorials/saving-changes) with
-   git.
-    * e.g. `git commit -a -m "Updated paragraph about my hopes and dreams"`
-* push to (your fork of) this git repository
+* navigate to `/public`, commit your changes, and push.
+    * e.g. `git commit -a -m "Added limited bio to About page"`
     * e.g. `git push`
+    
+For those still learning to use git (we were all here once), Atlassian has a 
+decent [tutorial](https://www.atlassian.com/git/tutorials/saving-changes).
 
-**Note**: if you delete a source file which has already resulted in files being 
-generated in `pubic`, the generated files will not be automatically removed. A
-quick fix is to simply delete the generated files, or delete the public folder
-and regenerate it anew with `run.sh`.
+Finally, dig through `pelicanconf.py`, `/theme`, and `/plugins` and feel free to
+make them your own. I've attempted to document them appropriately.
+
+**Note**: if you delete a source file (e.g. in `/contents`) which has already
+resulted in files being generated in `/pubic`, the generated files will NOT be
+automatically removed.
