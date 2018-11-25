@@ -3,7 +3,8 @@
 Static website generation from markdown using Pelican with a few custom 
 extensions. Currently configured to generate a website in a subdirectory called
 `public` which is its own git repo set up as my "github pages" 
-(https://github.com/raabrp/raabrp.github.io).
+(https://github.com/raabrp/raabrp.github.io), available online at 
+https://raabrp.github.io or https://reillyraab.com
 
 **Repo Contents:**
 
