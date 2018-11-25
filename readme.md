@@ -41,7 +41,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 * Install requirements
 
         pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
-        sudo npm install -g katex d3 jsdom lightserver
+        sudo npm install -g katex d3 jsdom light-server
 
 * Fork and clone the repo
 
