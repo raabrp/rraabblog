@@ -115,13 +115,17 @@ def process_soup(content_object):
     else:
         content_object.last_updated = content_object.date
 
+    # distinguish pages from projects
+    setattr(content_object, 'standalone', (
+        'projects' in content_object.source_path.split(os.sep)
+    ))
+
     soup = BeautifulSoup(content_object._content, 'html.parser')
 
     # estimate readtime
     content_object.readtime = {
         'minutes': math.ceil(len(soup.get_text().split()) / WPM)
     }
-
 
     a_id = 0
     # give links unique ids

@@ -35,6 +35,7 @@
     </h2>
     <ul>
         {% for page in pages %}
+        {% if not page.standalone %}
         <li>
             <p>
                 <a href="{{ page.slug }}.html">
@@ -42,6 +43,23 @@
                 </a>
             </p>
         </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <h2>
+        Projects
+    </h2>
+    <ul>
+        {% for page in pages %}
+        {% if page.standalone %}
+        <li>
+            <p>
+                <a href="{{ page.slug }}.html">
+                 {{ page.title }}
+                </a>
+            </p>
+        </li>
+        {% endif %}
         {% endfor %}
     </ul>
 </article>

@@ -107,11 +107,13 @@
                   <a href="index.html">Home</a>
                 </li>
                 {% for page in pages %}
+                {% if not page.standalone %}
                 <li>
                   <a href="{{ page.slug }}.html">
                     {{ page.title }}
                   </a>
                 </li>
+                {% endif %}
                 {% endfor %}
               </ul>
             <!-- Unhidden if JavaScript enabled -->
