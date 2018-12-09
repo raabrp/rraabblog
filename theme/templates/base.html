@@ -27,11 +27,9 @@
     The google fonts API nominally minimizes data collection
     https://developers.google.com/fonts/faq
     #what_does_using_the_google_fonts_api_mean_for_the_privacy_of_my_users
-
-    {{ REMOTE_FONT_URL }}
     -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Raleway:600i|Roboto">
+          href="{{ REMOTE_FONT_URL }}">
     {% endif %}
 
     <!-- JS for Color Theming -->

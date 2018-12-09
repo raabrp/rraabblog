@@ -1,5 +1,6 @@
 ---
-slug: markdown-demo
+slug: test
+status: draft
 d3: true
 title: Markdown Demo
 date: 2018-01-01
@@ -15,19 +16,24 @@ The top of this file includes
 
 ```
 ---
-slug: hello-world
-title: My First Article
+slug: test
+status: draft
+d3: true
+title: Markdown Demo
 date: 2018-01-01
+last_updated: 2018-07-20
 ---
 
 [TOC]
 
 ```
 
-* `slug`: URL's end (e.g. https://raabrp/gitlab.io/static-website/hello-world)
+* `slug`: location of generated html file
 * `title`: Appears at top of page
 * `date`: Date shown and sorted by on main page
-* `status: draft` is good for previewing data without being able to accidently
+*  last_updated: Date last updated
+* `status: draft` no link generated in index
+*  d3: optional use of d3 library
 push it with git (content is put in ignored `drafts` folder).
 * `[TOC]`: Includes table of contents (optional**
 
@@ -360,7 +366,7 @@ this.attach_component(Text, 'arclength_label')
         });
     });
 
-this.attach_component(Text, 'mode0_label')
+this.attach_component(Text, 'mode1_label')
     .transform(250, 20)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -368,7 +374,7 @@ this.attach_component(Text, 'mode0_label')
         });
     });
     
-this.attach_component(Text, 'mode1_label')
+this.attach_component(Text, 'mode2_label')
     .transform(250, 40)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -376,7 +382,7 @@ this.attach_component(Text, 'mode1_label')
         });
     });
 
-this.attach_component(Text, 'mode2_label')
+this.attach_component(Text, 'mode3_label')
     .transform(250, 60)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -399,8 +405,8 @@ this.animate_periodic_with(200, function(p) {
   const min_arc_length = width;
   const Tau = 2 * Math.PI;
 
-  var mode0_c = Math.sin(Tau * p + .1) * 0.3;
-  var mode1_c = Math.sin(Tau * p * 2 + .2) * 0.2;
+  var mode1_c = Math.sin(Tau * p + .1) * 0.3;
+  var mode2_c = Math.sin(Tau * p * 2 + .2) * 0.2;
   var mode2_c = Math.sin(Tau * p * 3 - .1) * 0.2;
   
   // is closure with respect to p
@@ -408,9 +414,9 @@ this.animate_periodic_with(200, function(p) {
     return {
       x: width * s,
       y: amp * (
-        Math.sin(Tau * s ) * mode0_c - 
-        Math.sin(Tau * s * 2) * mode1_c + 
-        Math.sin(Tau * s * 3) * mode2_c
+        Math.sin(Tau * s ) * mode1_c - 
+        Math.sin(Tau * s * 2) * mode2_c + 
+        Math.sin(Tau * s * 3) * mode3_c
       ) + amp
     };
   }
@@ -439,17 +445,17 @@ this.animate_periodic_with(200, function(p) {
           value: "Arclength: " + (arc_length / min_arc_length)
                                   .toFixed(2).toString()
       },
-      mode0_label: {
-          color: "#fff",
-          value: "Mode 0 Coefficient: " + mode0_c.toFixed(2).toString()
-      },
       mode1_label: {
           color: "#fff",
-          value: "Mode 1 Coefficient: " + mode1_c.toFixed(2).toString()
+          value: "Mode 0 Coefficient: " + mode1_c.toFixed(2).toString()
       },
       mode2_label: {
           color: "#fff",
-          value: "Mode 2 Coefficient: " + mode2_c.toFixed(2).toString()
+          value: "Mode 1 Coefficient: " + mode2_c.toFixed(2).toString()
+      },
+      mode3_label: {
+          color: "#fff",
+          value: "Mode 2 Coefficient: " + mode3_c.toFixed(2).toString()
       }
   };
 });
@@ -486,7 +492,7 @@ this.attach_component(Text, 'arclength_label')
         });
     });
 
-this.attach_component(Text, 'mode0_label')
+this.attach_component(Text, 'mode1_label')
     .transform(250, 20)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -494,7 +500,7 @@ this.attach_component(Text, 'mode0_label')
         });
     });
     
-this.attach_component(Text, 'mode1_label')
+this.attach_component(Text, 'mode2_label')
     .transform(250, 40)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -502,7 +508,7 @@ this.attach_component(Text, 'mode1_label')
         });
     });
 
-this.attach_component(Text, 'mode2_label')
+this.attach_component(Text, 'mode3_label')
     .transform(250, 60)
     .use(function(selection) {
         selection.attr("style", function(d) {
@@ -525,18 +531,18 @@ this.animate_periodic_with(200, function(p) {
   const min_arc_length = width;
   const Tau = 2 * Math.PI;
 
-  var mode0_c = Math.sin(Tau * p + .1) * 0.3;
-  var mode1_c = Math.sin(Tau * p * 2 + .2) * 0.2;
-  var mode2_c = Math.sin(Tau * p * 3 - .1) * 0.2;
+  var mode1_c = Math.sin(Tau * p + .1) * 0.3;
+  var mode2_c = Math.sin(Tau * p * 2 + .2) * 0.2;
+  var mode3_c = Math.sin(Tau * p * 3 - .1) * 0.2;
   
   // is closure with respect to p
   function parameterized(s) {
     return {
       x: width * s,
       y: amp * (
-        Math.sin(Tau * s ) * mode0_c - 
-        Math.sin(Tau * s * 2) * mode1_c + 
-        Math.sin(Tau * s * 3) * mode2_c
+        Math.sin(Tau * s ) * mode1_c - 
+        Math.sin(Tau * s * 2) * mode2_c + 
+        Math.sin(Tau * s * 3) * mode3_c
       ) + amp
     };
   }
@@ -565,17 +571,17 @@ this.animate_periodic_with(200, function(p) {
           value: "Arclength: " + (arc_length / min_arc_length)
                                   .toFixed(2).toString()
       },
-      mode0_label: {
-          color: "#fff",
-          value: "Mode 0 Coefficient: " + mode0_c.toFixed(2).toString()
-      },
       mode1_label: {
           color: "#fff",
-          value: "Mode 1 Coefficient: " + mode1_c.toFixed(2).toString()
+          value: "Mode 0 Coefficient: " + mode1_c.toFixed(2).toString()
       },
       mode2_label: {
           color: "#fff",
-          value: "Mode 2 Coefficient: " + mode2_c.toFixed(2).toString()
+          value: "Mode 1 Coefficient: " + mode2_c.toFixed(2).toString()
+      },
+      mode3_label: {
+          color: "#fff",
+          value: "Mode 2 Coefficient: " + mode3_c.toFixed(2).toString()
       }
   };
 });

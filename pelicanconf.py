@@ -35,7 +35,7 @@ PLUGIN_PATHS = ["plugins"]
 OUTPUT_SOURCES = True
 
 # Plugin lists
-PLUGINS = ["soup", "katex", "charts"]
+PLUGINS = ["soup", "katex", "d3"]
 
 # Markdown settings
 MARKDOWN = {
@@ -52,6 +52,9 @@ MARKDOWN = {
     },
     'output_format': 'html5',
 }
+
+# Third party fonts
+REMOTE_FONT_URL = "https://fonts.googleapis.com/css?family=Raleway:600i|Roboto"
 
 # URL patterns
 ARTICLE_SAVE_AS = '{slug}.html'

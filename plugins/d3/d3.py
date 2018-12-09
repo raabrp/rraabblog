@@ -7,10 +7,7 @@ What happens here:
    which offers some nice utilities.
 
 TODO
- * Allow use of mathbox
-
-TODO
- * Allow server-side pre-rendering of animations to webm.
+ * Allow server-side pre-rendering of animations to webm / svg.
 
 How it happens:
 
@@ -25,15 +22,7 @@ TODO
    - See katex plugin implementation with bond and jsdom
 
 Note:
-Re-rendering SVGs for each frame with d3 can be too CPU intensive when actually
-modifying the DOM. In such cases, go with Mathbox instead or render to webm.
-
-DoubleNote:
-With integrated graphics, I incur about the same CPU load for painting a simple
-wiggling line with either library. :(
-
-d3 is good for: interactivity, colors.
-mathbox is good for: leveragiing gpu
+Re-rendering SVGs for each frame with d3 can be rather CPU intensive.
 
 """
 import io
@@ -69,7 +58,8 @@ def independent_traceback(func):
     return wrapped
 
 ###############################################################################
-
+# use node to render d3 to svg?
+#
 # JS = bond.make_bond('JavaScript')
 # JS.eval_block(
 #     r'''
@@ -100,8 +90,6 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
             '<noscript>',
             '*JavaScript is not Enabled*',
             '</noscript>',
-            '</div>',
-            '<div>',
             '<script>',
             'onReady(function() {',
             'var svg = makeSVG({});'.format(

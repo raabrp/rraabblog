@@ -16,3 +16,28 @@
     {{ page.content }}
 </article>
 {% endblock %}
+
+{% block script %}
+
+{% if page.d3 %}
+<!-- For Charts -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="theme/js/simplify.js"></script>
+<script src="theme/js/charts.js"></script>
+<script src="theme/js/chart_components.js"></script>
+{% endif %}
+
+{% if page.twgl %}
+<!-- For Webgl -->
+<script src="/js/twgl.min.js"></script>
+<script src="/js/minshader.js"></script>
+<script id="twgl_vs" type="x-shader/x-vertex">
+ attribute vec4 position;
+
+ void main() {
+     gl_Position = position;
+}
+</script>
+{% endif %}
+
+{% endblock %}
