@@ -28,7 +28,6 @@ Re-rendering SVGs for each frame with d3 can be rather CPU intensive.
 import io
 import sys
 import traceback
-import uuid
 
 import re
 import json
@@ -75,6 +74,7 @@ def independent_traceback(func):
 # render_svg = JS.callable('render')
 
 class Preprocessor(markdown.preprocessors.Preprocessor):
+    uid = 0
 
     def process_chunk(self, lines):
 
@@ -83,7 +83,8 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
         # parameters in the <d3> tag get passed to makeSVG function.
         params = {k.replace('-', '_'): v for k, v in node.attrs.items()}
         if not 'id' in params:
-            params['id'] = uuid.uuid1().hex
+            params['id'] = 'd3id' + str(self.uid)
+            self.uid += 1
 
         return [
             '<div id="{}" class="svg-container">'.format(params['id']),
