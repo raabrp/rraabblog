@@ -16,7 +16,6 @@ How it happens:
 import io
 import sys
 import traceback
-import uuid
 
 import re
 import json
@@ -47,12 +46,14 @@ def independent_traceback(func):
 
 
 class Preprocessor(markdown.preprocessors.Preprocessor):
+    uid = 0
 
     def process_chunk(self, lines):
 
         node = BeautifulSoup('\n'.join(lines), 'html.parser').find()
-
-        uid = uuid.uuid1().hex
+        if not 'id' in params:
+            params['id'] = 'd3_' + str(self.uid)
+            self.uid += 1
 
         return [
             '<div id="{}-container" class="twgl-container">'.format(uid),

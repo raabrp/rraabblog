@@ -83,7 +83,7 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
         # parameters in the <d3> tag get passed to makeSVG function.
         params = {k.replace('-', '_'): v for k, v in node.attrs.items()}
         if not 'id' in params:
-            params['id'] = 'd3id' + str(self.uid)
+            params['id'] = 'd3_' + str(self.uid)
             self.uid += 1
 
         return [
