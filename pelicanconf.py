@@ -86,12 +86,12 @@ DEFAULT_PAGINATION = False
 ###############################################################################
 
 # theme names
-# read theme/static/scss directory
-# strip 'color-' and '.scss' from all 'color-*.scss' filenames
+color_prefix = "color-"
+color_suffix = ".css"
 theme_names = sorted([
-    x[6:-5] for x in \
-    os.listdir(os.path.join(THEME, 'static', 'scss')) \
-    if x.startswith('color-')
+    x[len(color_prefix):-len(color_suffix)] for x in \
+    os.listdir(os.path.join(THEME, 'static', 'css')) \
+    if x.startswith(color_prefix)
 ])
 
 # JSON-serialiazable data available to Jinja templates
