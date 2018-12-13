@@ -2,6 +2,20 @@ body {
     font-family: Roboto, Arial, sans-serif;
 }
 
+main {
+    font-size: 100%;
+}
+
+/* links */
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* emphasis */
+
 strong > em {
     font-family: Raleway, Arial, sans-serif;
     font-weight: 600;
@@ -25,25 +39,26 @@ h2 {
     font-size: 125%;
 }
 
+/* blockquote */
 blockquote:before {
     font-size: 350%;
 }
 
+/* lists */
 ul, ol, blockquote, .footnote {
     font-size: 95%;
 }
 
-/* past second level*/
+    /* past second level*/
 li li ul, li li ol {
     font-size: 100%;
 }
 
+/* code */
 pre, code {
-    font-size: 95%;
-}
-
-main {
-    font-size: 100%;
+    font-size: 92%;
+    padding-left: 1ch;
+    padding-right: 1ch;
 }
 
 /*
@@ -65,4 +80,44 @@ main {
     h2 {
         font-size: 200%;
     }
+}
+
+/* Tooltips */
+
+[tooltip] {
+    position: relative;
+    z-index: 2;
+}
+
+[tooltip]:before {
+    margin-bottom: 5px;
+    margin-left: -10ch;
+    padding: 1ch;
+    width: 20ch;
+    text-align: center;
+    border: 1px solid;
+}
+
+[tooltip]:after {
+    border-top: 5px solid;
+}
+
+/* Forms, Input */
+
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+
+input[type=button], button {
+    padding: 0.8ch 2ch;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid;
+}
+
+/* SVG */
+
+path {
+    stroke-width: 1px;
 }

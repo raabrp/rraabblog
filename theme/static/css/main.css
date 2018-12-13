@@ -107,6 +107,9 @@ div.footnote > ul, div.footnote > ol {
 li > p {
     margin-bottom: 0;
 }
+li:first-child {
+    margin-top: 0;
+}
 
 /* tables
  */
