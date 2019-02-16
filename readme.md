@@ -2,25 +2,36 @@
 
 Static website generation from markdown using Pelican with a few custom 
 extensions. Currently configured to generate a website in a subdirectory called
-`public` which is its own git repo set up as my "github pages" 
-(https://github.com/raabrp/raabrp.github.io), available online at 
-https://raabrp.github.io or https://reillyraab.com
+`public`, which is its own git repo. Specifically, it's a repo which is set up
+as my "github pages" (https://github.com/raabrp/raabrp.github.io), available 
+online at https://raabrp.github.io or https://reillyraab.com
 
 **Repo Contents:**
 
 ```
 .
-├── /content        Your content goes here (ignored by git)
-├── /drafts         Drafts of content (not turned into HTML; ignored by git) 
-├── /public         Generated HTML files are put here (ignored by this repo)
-├── /plugins        Python files for processing and manipulating content
-├── /theme          HTML templates, Javascript, and CSS
-├── .gitignore      List of files ignored by git
-├── licence.txt     MIT licence
-├── pelicanconf.py  Contains basic settings for pelican
-├── readme.md       You're reading it now
-├── run.sh          Shell script to generate files and serve locally
-└── todo.md         Plans for the project
+├── /content          Your content goes here (ignored by git)
+| ├ /articles
+| └ /pages
+| ...additional static content...
+|
+├── /content_example  Minimal example content for reference
+| ├ /articles
+| └ /pages
+|
+├── /drafts           Drafts of content (not turned into HTML; ignored by git) 
+├── /public           Generated HTML files are put here (ignored by this repo)
+├── /plugins          Python files for processing and manipulating content
+├── /theme
+| ├ /templates        HTML templates (Jinja)
+| └ /static           Static resources (Javascript, CSS)
+|
+├── .gitignore        List of files ignored by git
+├── licence.txt       MIT licence
+├── pelicanconf.py    Contains basic settings for pelican
+├── readme.md         You're reading it now
+├── run.sh            Shell script to generate files and serve locally
+└── todo.md           Plans for the project
 ```
 
 # Setup
@@ -37,8 +48,6 @@ https://raabrp.github.io or https://reillyraab.com
 
 * [npm/node.js](https://www.npmjs.com/get-npm)
     * [katex](https://github.com/Khan/KaTeX)
-    * [d3](https://d3js.org)
-    * [jsdom](https://github.com/jsdom/jsdom)
     * [lightserver](https://www.npmjs.com/package/light-server)
 
 ## Installation
@@ -48,7 +57,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 * Install requirements
 
         pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
-        sudo npm install -g katex d3 jsdom light-server
+        sudo npm install -g katex light-server
 
     Personal note: I had to make sure to include
         `~/.local/bin` in my PATH and set

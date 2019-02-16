@@ -1,6 +1,5 @@
 ---
 slug: test
-status: draft
 d3: true
 title: Markdown Demo
 date: 2018-01-01
@@ -52,7 +51,6 @@ itaque. Cum vitae natus est aut aliquam. Ut blanditiis deleniti consequatur
 placeat modi consequatur sed. Minus magnam repellendus molestiae. Sint hic illo
 voluptatem veniam maiores dolore.
 
-**-- as --**
 
 ```
 Officia officiis est in illum ipsam id. Soluta ipsam fugit reprehenderit 
@@ -77,7 +75,6 @@ voluptatem veniam maiores dolore.
 
 #### Subheader
 
-**-- as --**
 
 ```md
 # Headers
@@ -93,7 +90,6 @@ voluptatem veniam maiores dolore.
 
 ***
 
-**-- as --**
 
 ```md
 ***
@@ -103,7 +99,6 @@ voluptatem veniam maiores dolore.
 
 **Similique** *asperiores* nihil `ad aut` ***aliquam totam***. 
 
-**-- as --**
 
 ```md
 **Similique** *asperiores* nihil `ad aut` ***aliquam totam***.
@@ -114,7 +109,6 @@ voluptatem veniam maiores dolore.
 Tenetur rem [deleniti](http://www.example.com) magan
 [*consequatur*](http://www.example.com) at non.
 
-**-- as --**
 
 ~~~md
 Tenetur rem [deleniti](http://www.example.com) 
@@ -133,7 +127,6 @@ Tenetur rem [deleniti](http://www.example.com)
 > Velit molestiae minima architecto quam. Id eum id illum. 
 > Reiciendis qui et eos commodi corrupti.
 
-**-- as --**
 
 ```md
 > Beatae officiis quae aut iusto rerum. Non amet molestiae et. 
@@ -153,7 +146,6 @@ Footnote.[^unique string]
 
 [^unique string]: Footnote written separately
 
-**-- as --**
 
 ```md
 Footnote.[^unique string]
@@ -178,7 +170,6 @@ class SomeClass:
 ... prompt'''
 ```
 
-**-- as --**
 
 ```md
 ~~~python
@@ -208,7 +199,6 @@ class SomeClass:
 
 ![Happy Cookie Monster](https://slides.yihui.name/gif/happy-elmo.gif)
 
-**-- as --**
 
 ```
 ![Happy Cookie Monster](https://slides.yihui.name/gif/happy-elmo.gif)
@@ -223,7 +213,6 @@ class SomeClass:
         * sub-sub-item i
 * Item 3
 
-**-- as --**
 
 ```md
 * Item 1
@@ -240,7 +229,6 @@ class SomeClass:
 2. That one
 3. The other thing
 
-**-- as --**
 
 ```md
 1. This one
@@ -260,7 +248,6 @@ class SomeClass:
 | 5.4         | 3.9        | 1.7         | 0.4        |setosa  |
 
 
-**-- as --**
 
 ```md
 | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
@@ -281,7 +268,6 @@ document.getElementById("example").innerHTML="Hello, world!";
 </script>
 </div>
 
-**-- as --**
 
 ~~~html
 <div id="example">
@@ -297,7 +283,6 @@ document.getElementById("example").innerHTML="Hello, world!";
 
 Inline math: $\alpha > \beta$.
 
-**-- as --**
 
 ```
 Inline math: $\alpha > \beta$.
@@ -315,7 +300,6 @@ x
 ) ~ dx = 0
 $$
 
-**-- as --**
 
 ```
 $$
@@ -463,7 +447,6 @@ this.animate_periodic_with(200, function(p) {
 </d3>
 
 
-**-- as --**
 
 (where `D3` should be lowercase)
 

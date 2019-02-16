@@ -13,9 +13,6 @@ How it happens:
    boilerplate.
 
 """
-import io
-import sys
-import traceback
 
 import re
 import json
@@ -23,27 +20,7 @@ import json
 from bs4 import BeautifulSoup
 
 import markdown
-from markdown.util import etree
-from markdown.util import AtomicString
-
-import bond
-
-from pelican import signals, generators
-
-def independent_traceback(func):
-    '''
-    Pelican suppresses tracebacks, so we print them to stdout
-    '''
-    def wrapped(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            with io.StringIO() as mock_stdout:
-                traceback.print_exception(*sys.exc_info(), file=mock_stdout)
-                sys.stderr.write(mock_stdout.getvalue())
-                raise e
-    return wrapped
-
+import markdown.preprocessors
 
 class Preprocessor(markdown.preprocessors.Preprocessor):
     uid = 0
@@ -51,27 +28,35 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
     def process_chunk(self, lines):
 
         node = BeautifulSoup('\n'.join(lines), 'html.parser').find()
+
+        params = {k.replace('-', '_'): v for k, v in node.attrs.items()}
         if not 'id' in params:
-            params['id'] = 'd3_' + str(self.uid)
+            params['id'] = 'twgl_' + str(self.uid)
             self.uid += 1
 
+        if not 'vs' in params:
+            params['vs'] = "twgl_vs"
+
         return [
-            '<div id="{}-container" class="twgl-container">'.format(uid),
+            '<div id="{}-container" class="twgl-container">'.format(params['id']),
             '<noscript>',
             '*JavaScript is not Enabled*',
             '</noscript>',
-            '<script id={} type="x-shader/x-fragment">'.format(uid),
+            '<script id={}_shader type="x-shader/x-fragment">'.format(params['id']),
             *node.text.split('\n'),
             '</script>',
-            '<canvas id="{}_canvas"></canvas>'.format(uid),
-            '<a id="{}_fsbind">View fullscreen</a>'.format(uid),
+            '<canvas id="{}_canvas"></canvas>'.format(params['id']),
+            '<a id="{}_fs">View fullscreen</a>'.format(params['id']),
             '<script type="text/javascript">',
-            'shade("{}");'.format(uid),
+            'onReady(function() {',
+            '{id}_obj = new shade("{id}", "{vs}");'.format(
+                id=params['id'], vs=params['vs']
+            ),
+            '});',
             '</script>',
             '</div>'
         ]
 
-    @independent_traceback
     def run(self, lines):
 
         open_tag = re.compile('<twgl')
@@ -118,7 +103,7 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
 
         return iterate_over(lines)
 
-class MarkdownExtension(markdown.Extension):
+class TWGL_MD_Extension(markdown.Extension):
 
     def extendMarkdown(self, md, md_globals):
         # uses preprocessor
@@ -127,41 +112,7 @@ class MarkdownExtension(markdown.Extension):
         # https://alexwlchan.net/2017/03/extensions-in-python-markdown/
 
         md.preprocessors.add(
-            'd3_element',
+            'twgl_element',
             Preprocessor(),
             '_begin'
         )
-
-# register our extension, and get it to play nice with other extensions
-###############################################################################
-
-def register():
-    signals.initialized.connect(pelican_init)
-
-def pelican_init(pelicanobj):
-    # Register Markdown extension
-    register_markdown_extension(pelicanobj)
-
-@independent_traceback
-def register_markdown_extension(pelicanobj):
-    """
-    place the markdown extension object at the correct place in the settings
-    """
-
-    markdown_extension = MarkdownExtension()
-
-    if 'MARKDOWN' in pelicanobj.settings:
-        if 'extensions' in pelicanobj.settings['MARKDOWN']:
-            pelicanobj.settings['MARKDOWN']['extensions'].append(
-                markdown_extension
-            )
-        else:
-            pelicanobj.settings['MARKDOWN']['extensions'] = [
-                markdown_extension
-            ]
-    elif 'MD_EXTENSIONS' in pelicanobj.settings:
-        pelicanobj.settings['MD_EXTENSIONS'].append(
-            markdown_extension
-        )
-    else:
-        raise LookupError("Could not find pelicanobj.settings['MARKDOWN']")

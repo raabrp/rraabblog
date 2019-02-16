@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,8 +19,10 @@
     <!-- CSS for Colors -->
     {% for theme in JINJA_INJECTED['theme_names'][::-1] %}
     <link rel="stylesheet" type="text/css" id="{{ theme }}-theme-css"
-          class="color-css" href="theme/css/color-{{ theme }}.css">
+          class="color-css" href="theme/css/colors/color-{{ theme }}.css">
     {% endfor %}
+
+    <link rel="stylesheet" type="text/css" href="theme/css/colors.css">
 
     {% if REMOTE_FONT_URL %}
     <!--
@@ -51,7 +53,7 @@
          for (var i=0; i < color_links.length; i++) {
              var link = color_links[i];
              if (link.attributes['id'].value == (val + '-theme-css')) {
-                 link.href = 'theme/css/color-' + val + '.css';
+                 link.href = 'theme/css/colors/color-' + val + '.css';
              } else {
                  link.removeAttribute('href');
              }
@@ -131,6 +133,7 @@
         </nav>
       </menu>
 
+      <div id="top-spacer"></div>
 
       {% block content %}
       {% endblock content %}
@@ -138,6 +141,9 @@
 
     {% block script %}
     {% endblock script %}
+    <script type="text/javascript">
+     onReady(_doAnimation);
+    </script>
   </body>
 
 </html>

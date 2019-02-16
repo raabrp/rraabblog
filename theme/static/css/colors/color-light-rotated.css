@@ -1,0 +1,115 @@
+/* Generated Colors */
+
+/*
+ * https://github.com/nashamri/spacemacs-theme/blob/master/spacemacs-common.el
+ * http://www.workwithcolor.com/color-converter-01.htm
+ */
+
+:root {
+
+    /* white in default scheme (higher number is brighter) */
+    --w2: #2b2b2b;
+    --w1: #3a3a3a;
+    --w0: #404040;
+
+    /* greys (higher number is darker) */
+    --g0:  #b8b8b8;
+    --g1:  #c9c9c9;
+    --g2:  #d2d2d2;
+    --g2a: #d2d2d2ed; /* with alpha */
+    --g3:  #d9d9d9;
+    --g4:  #e5e5e5;
+
+    /* subtle colors */
+    --s1: #5b363f;
+    --s2: #545e8c;
+    --s3: #5e5588;
+    --s4: #c8a7a4;
+
+    /* headers and primary color sequence */
+    --h1: #944062;
+    --h2: #0071a7;
+    --h3: #2b5860;
+    --h4: #375f58; 
+
+    /* loud colors */
+    --e1: #776206;
+    --e2: #9a4e23;
+    --e3: #1f4137;
+
+    /* pygments */
+
+    --hlerrc:  #c1a24d;
+    --hlerrbg: #fdf5ec;
+    --hlhll:    #9cadac;
+    --hlbg:     #c8d4d5;
+    --hlcl:     #000b0b;
+
+    --hlc:   #658380;     /* Comment */
+    --hlk:   #362454;     /* Keyword */
+    --hll:   #943829;     /* Literal */
+    --hln:   #000b0b;     /* Name */
+    --hlo:   #746c11;     /* Operator */
+    --hlp:   #000b0b;     /* Punctuation */
+    --hlch:  #658380;    /* Comment.Hashbang */
+    --hlcm:  #658380;    /* Comment.Multiline */
+    --hlcp:  #658380;    /* Comment.Preproc */
+    --hlcpf: #658380;    /* Comment.PreprocFile */
+    --hlc1:  #658380;    /* Comment.Single */
+    --hlcs:  #658380;    /* Comment.Special */
+    --hlgd:  #746c11;    /* Generic.Deleted */
+    --hlgi:  #002e34;    /* Generic.Inserted */
+    --hlgu:  #658380;    /* Generic.Subheading */
+    --hlkc:  #362454;    /* Keyword.Constant */
+    --hlkd:  #362454;    /* Keyword.Declaration */
+    --hlkn:  #746c11;    /* Keyword.Namespace */
+    --hlkp:  #362454;    /* Keyword.Pseudo */
+    --hlkr:  #362454;    /* Keyword.Reserved */
+    --hlkt:  #362454;    /* Keyword.Type */
+    --hlld:  #002826;    /* Literal.Date */
+    --hlm:   #943829;}    /* Literal.Number */
+    --hls:   #002826;}    /* Literal.String */
+    --hlna:  #002e34;    /* Name.Attribute */
+    --hlnb:  #000b0b;    /* Name.Builtin */
+    --hlnc:  #002e34;    /* Name.Class */
+    --hlno:  #362454;    /* Name.Constant */
+    --hlnd:  #002e34;    /* Name.Decorator */
+    --hlni:  #000b0b;    /* Name.Entity */
+    --hlne:  #002e34;    /* Name.Exception */
+    --hlnf:  #002e34;    /* Name.Function */
+    --hlnl:  #000b0b;    /* Name.Label */
+    --hlnn:  #000b0b;    /* Name.Namespace */
+    --hlnx:  #002e34;    /* Name.Other */
+    --hlpy:  #000b0b;    /* Name.Property */
+    --hlnt:  #746c11;    /* Name.Tag */
+    --hlnv:  #000b0b;    /* Name.Variable */
+    --hlow:  #746c11;    /* Operator.Word */
+    --hlw:   #000b0b;}    /* Text.Whitespace */
+    --hlmb:  #943829;    /* Literal.Number.Bin */
+    --hlmf:  #943829;    /* Literal.Number.Float */
+    --hlmh:  #943829;    /* Literal.Number.Hex */
+    --hlmi:  #943829;    /* Literal.Number.Integer */
+    --hlmo:  #943829;    /* Literal.Number.Oct */
+    --hlsa:  #002826;    /* Literal.String.Affix */
+    --hlsb:  #002826;    /* Literal.String.Backtick */
+    --hlsc:  #002826;    /* Literal.String.Char */
+    --hldl:  #002826;    /* Literal.String.Delimiter */
+    --hlsd:  #002826;    /* Literal.String.Doc */
+    --hls2:  #002826;    /* Literal.String.Double */
+    --hlse:  #943829;    /* Literal.String.Escape */
+    --hlsh:  #002826;    /* Literal.String.Heredoc */
+    --hlsi:  #002826;    /* Literal.String.Interpol */
+    --hlsx:  #002826;    /* Literal.String.Other */
+    --hlsr:  #002826;    /* Literal.String.Regex */
+    --hls1:  #002826;    /* Literal.String.Single */
+    --hlss:  #002826;    /* Literal.String.Symbol */
+    --hlbp:  #000b0b;    /* Name.Builtin.Pseudo */
+    --hlfm:  #002e34;    /* Name.Function.Magic */
+    --hlvc:  #000b0b;    /* Name.Variable.Class */
+    --hlvg:  #000b0b;    /* Name.Variable.Global */
+    --hlvi:  #000b0b;    /* Name.Variable.Instance */
+    --hlvm:  #000b0b;    /* Name.Variable.Magic */
+    --hlil:  #943829;    /* Literal.Number.Integer.Long */
+
+
+}

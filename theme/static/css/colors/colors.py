@@ -190,25 +190,22 @@ variables = {
     "g1": "#2e2e2e",
     "g0": "#3b3b3b",
 
+    # subtle colors
+    "s1": "#a2b2d2",  # blockquote color
+    "s2": "#409b9b",  # link (teal)
+    "s3": "#2aa1ae",  # comment text
+    "s4": "#444155",  # highlight background
+
     # primary color sequence
     "h1": "#4f97d7",  # h1 (blue)
     "h2": "#2d9574",  # h2 (blue-green)
     "h3": "#67b11d",  # h3 (yellow)
     "h4": "#b1951d",  # h4 (orange)
 
-    # subtle colors
-    "s1": "#a2b2d2",  # blockquote color
-    "s2":  "#409b9b",  # link (teal)
-
     # loud colors
     "e1": "#df5e8c",  # emphasis (pink)
-
-    # unused spacemacs colors
-    "sm_str":     "#2d9574",  # green
-    "sm_comment": "#2aa1ae",  # teal
-    "sm_const":   "#a45bad",  # purple
-    "sm_cursor":  "#b1951d",  # yellow
-    "sm_func":    "#bc6ec5",  # pinkish
+    "e2": "#bc6ec5",  # purple
+    "e3": "#eead0e",  # yellow
 
     # Syntax highlighting (pygments)
     "hl_err_c":      "#960050",  # Error

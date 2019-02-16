@@ -64,9 +64,6 @@ pre, code {
 /*
  * Desktop ( > 1200 px width)
  *
- * Place TOC on left
- * Make headers larger
- * Distribute text
  */
 @media (min-width: 1200px) {
     header > h1 {
@@ -80,6 +77,11 @@ pre, code {
     h2 {
         font-size: 200%;
     }
+}
+
+
+.wiki-extract {
+    font-size: 95%;
 }
 
 /* Tooltips */

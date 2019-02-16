@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 
-What happens here:
+Preprocessor for Markdown handling d3
 
  * Allow nicer way to make d3 charts (using /theme/static/js/charts.js)
    which offers some nice utilities.
-
-TODO
- * Allow server-side pre-rendering of animations to webm / svg.
 
 How it happens:
 
@@ -15,19 +12,7 @@ How it happens:
    <d3> objects with <div> elements and the necessary Javascript
    boilerplate to use with charts.js
 
-TODO
- * Allow us to use node to generate the svg server-side and display the static
-   SVG if d3 cannot be loaded client-side - or better yet - render to looping
-   webm formats.
-   - See katex plugin implementation with bond and jsdom
-
-Note:
-Re-rendering SVGs for each frame with d3 can be rather CPU intensive.
-
 """
-import io
-import sys
-import traceback
 
 import re
 import json
@@ -35,43 +20,6 @@ import json
 from bs4 import BeautifulSoup
 
 import markdown
-from markdown.util import etree
-from markdown.util import AtomicString
-
-import bond
-
-from pelican import signals, generators
-
-def independent_traceback(func):
-    '''
-    Pelican suppresses tracebacks, so we print them to stdout
-    '''
-    def wrapped(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            with io.StringIO() as mock_stdout:
-                traceback.print_exception(*sys.exc_info(), file=mock_stdout)
-                sys.stderr.write(mock_stdout.getvalue())
-                raise e
-    return wrapped
-
-###############################################################################
-# use node to render d3 to svg?
-#
-# JS = bond.make_bond('JavaScript')
-# JS.eval_block(
-#     r'''
-#     var d3 = require("d3");
-#     const jsdom = require("jsdom");
-#     const { JSDOM } = jsdom;
-
-#     function render(s, is_block) {
-#       return ???;
-#     }
-#     '''
-# )
-# render_svg = JS.callable('render')
 
 class Preprocessor(markdown.preprocessors.Preprocessor):
     uid = 0
@@ -104,7 +52,6 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
             '</div>'
         ]
 
-    @independent_traceback
     def run(self, lines):
 
         open_tag = re.compile('<d3')
@@ -151,7 +98,7 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
 
         return iterate_over(lines)
 
-class MarkdownExtension(markdown.Extension):
+class D3_MD_Extension(markdown.Extension):
 
     def extendMarkdown(self, md, md_globals):
         # uses preprocessor
@@ -164,37 +111,3 @@ class MarkdownExtension(markdown.Extension):
             Preprocessor(),
             '_begin'
         )
-
-# register our extension, and get it to play nice with other extensions
-###############################################################################
-
-def register():
-    signals.initialized.connect(pelican_init)
-
-def pelican_init(pelicanobj):
-    # Register Markdown extension
-    register_markdown_extension(pelicanobj)
-
-@independent_traceback
-def register_markdown_extension(pelicanobj):
-    """
-    place the markdown extension object at the correct place in the settings
-    """
-
-    markdown_extension = MarkdownExtension()
-
-    if 'MARKDOWN' in pelicanobj.settings:
-        if 'extensions' in pelicanobj.settings['MARKDOWN']:
-            pelicanobj.settings['MARKDOWN']['extensions'].append(
-                markdown_extension
-            )
-        else:
-            pelicanobj.settings['MARKDOWN']['extensions'] = [
-                markdown_extension
-            ]
-    elif 'MD_EXTENSIONS' in pelicanobj.settings:
-        pelicanobj.settings['MD_EXTENSIONS'].append(
-            markdown_extension
-        )
-    else:
-        raise LookupError("Could not find pelicanobj.settings['MARKDOWN']")

@@ -17,50 +17,76 @@ What happens here:
 '''
 
 import os
+import sys
 import json
 import markdown
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+
+import plugins
 
 AUTHOR = 'Reilly Raab'
 TIMEZONE = 'UTC'
 DEFAULT_LANG = 'en'
 
-# Input/Output/Template Paths
-_DIR = os.path.dirname(os.path.realpath(__file__))
-THEME = os.path.join(_DIR, 'theme')
-PATH = os.path.join(_DIR, 'content')
-STATIC_PATHS = ['images', 'static', 'js', 'css']
-IGNORE_FILES = ['.#*', '__pycache__']
-OUTPUT_PATH = os.path.join(_DIR, 'public')
-PLUGIN_PATHS = ["plugins"]
-OUTPUT_SOURCES = True
+###############################################################################
+# PATHS
 
+# content directory
+# expected to have `articles` and `pages` subdirectories
+PATH = 'content'
+# additional subdirectories which are merely copied to output
+STATIC_PATHS = ['images', 'static', 'js', 'css']
+# File patterns which are ignored
+IGNORE_FILES = ['.#*', '__pycache__']
+
+# theme directory
+# Expected to have `templates` and `static` subdirectories
+THEME = 'theme'
+
+# output directory
+OUTPUT_PATH = 'public'
+
+# path for plugins
+PLUGIN_PATHS = ["plugins"]
 # Plugin lists
-PLUGINS = ["soup", "katex", "d3"]
+PLUGINS = ["postprocess"]
+
+###############################################################################
+# Optional Config
+
+# write original file sources to output
+OUTPUT_SOURCES = True
 
 # Markdown settings
 MARKDOWN = {
+    'extensions': [
+        plugins.D3_MD_Extension(),     # inject D3 when needed
+        plugins.Katex_MD_Extension(),  # process math with katex
+        plugins.TWGL_MD_Extension(),   # inject TWGL when needed
+        'toc',         # table of contents
+        'footnotes',   # footnotes
+        'tables',      # tables
+        'fenced_code', # ``` codeblocks
+        'codehilite',  # syntax higlighting
+        'smarty'       # fancy quotes & stuff
+    ],
     'extension_configs': {
-        'markdown.extensions.toc': {
+        'toc': {
             'permalink': '#'
         },
-        'markdown.extensions.codehilite': {'css_class': 'highlight'},
-        'markdown.extensions.extra': {},
-        'markdown.extensions.smarty': {
+        'smarty': {
             'smart_angled_quotes': True
-        },
-        'markdown.extensions.meta': {},
+        }
     },
-    'output_format': 'html5',
+    'output_format': 'html5'
 }
 
-# Third party fonts
-REMOTE_FONT_URL = "https://fonts.googleapis.com/css?family=Raleway:600i|Roboto"
-
 # URL patterns
+SLUGIFY_SOURCE = 'slug'
 ARTICLE_SAVE_AS = '{slug}.html'
 PAGE_SAVE_AS = '{slug}.html'
 DRAFT_SAVE_AS = '{slug}.html'
-SLUGIFY_SOURCE = 'slug'
 
 # Suppress Categories and Tags
 CATEGORY_SAVE_AS = ''
@@ -68,10 +94,10 @@ TAG_SAVE_AS = ''
 AUTHOR_SAVE_AS = ''
 FEEDS_SAVE_AS = ''
 
-# Suppress other extraneous pages
+# These templates render directly as independent output
 DIRECT_TEMPLATES = ['index', 'links']
 
-# Suppress other unnecessary utilities
+# Suppress unused utilities which Pelican provides
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
@@ -81,16 +107,18 @@ LINKS = None
 SOCIAL = None
 DEFAULT_PAGINATION = False
 
-# Allow definition of variables using python which will be available
-# to Jinja theme templates or javascript files
 ###############################################################################
+# Personal variable injections
 
-# theme names
+# Third party fonts
+REMOTE_FONT_URL = "https://fonts.googleapis.com/css?family=Raleway:600i|Roboto"
+
+# collect names of css files used for color themes
 color_prefix = "color-"
 color_suffix = ".css"
 theme_names = sorted([
     x[len(color_prefix):-len(color_suffix)] for x in \
-    os.listdir(os.path.join(THEME, 'static', 'css')) \
+    os.listdir(os.path.join(THEME, 'static', 'css', 'colors')) \
     if x.startswith(color_prefix)
 ])
 
@@ -106,5 +134,3 @@ JS_INJECTED = {}
 
 # String which declares injected variables for javascript
 INLINE_JS = 'var pelican = ' + json.dumps(JS_INJECTED) + ';'
-
-###############################################################################

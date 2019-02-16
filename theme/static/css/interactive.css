@@ -3,6 +3,10 @@
  * Layout and positions only
  */
 
+.hidden {
+    visibility: hidden;
+}
+
 /* global links */
 a {
     text-decoration: none;

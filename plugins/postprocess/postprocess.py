@@ -143,17 +143,66 @@ def process_soup(content_object):
         ])
     ]
 
-    # make images better by giving link to original and providing caption
+    # make images better by allowing full screen interaction and caption
+    img_id = 0
     for img in soup.find_all('img'):
         img_src = img.attrs['src']
         img_alt = img.attrs['alt']
+        if not 'id' in img.attrs:
+            img.attrs['id'] = "generated-img-id" + str(img_id)
+            img_id += 0
 
-        img.replaceWith(BeautifulSoup(
-            '<a href="' + img_src + '">\n    ' +
-            img.decode() + '\n</a>\n<p class="caption">' +
-            img_alt + '</p>',
-            'html.parser')
+        img.replaceWith(
+            BeautifulSoup(
+                img.decode() + '\n<p class="caption">' + img_alt + '</p>',
+                'html.parser'
+            )
         )
+
+    # inlinesvg
+    isvg_id = 0
+    for isvg in soup.find_all('inlinesvg'):
+        img_src = isvg.attrs['src']
+
+        if not 'id' in isvg.attrs:
+            isvg.attrs['id'] = "generated-isvg-id" + str(isvg_id)
+            isvg_id += 1
+
+        with open(img_src) as f:
+            content = f.read()
+
+        s = BeautifulSoup(content, 'html.parser')
+
+        r = s.find('svg')
+
+        r.attrs['id'] = isvg.attrs['id']
+
+        if 'width' in r.attrs:
+            del(r.attrs['width'])
+        if 'height' in r.attrs:
+            del(r.attrs['height'])
+
+        if 'class' in isvg.attrs:
+            r.attrs['class'] = isvg.attrs['class']
+        else:
+            r.attrs['class'] = 'inlinesvg'
+
+        isvg.replaceWith(s)
+
+    # preview for Wikipedia links
+    for a in soup.find_all('a'):
+        if 'href' in a.attrs:
+            if a.attrs['href'].startswith(
+                    'https://en.wikipedia.org/wiki/'
+            ):
+
+                targetname = a.attrs['href'][len('https://en.wikipedia.org/wiki/'):]
+
+                a.attrs['class'] = 'wikipedia_link'
+                a.attrs['endpoint'] = \
+                    'https://en.wikipedia.org/api/rest_v1/page/summary/{}'.format(
+                        targetname
+                    )
 
     # extract context of references to display as title attribute to backlinks
     for backref in soup.find_all(attrs={'class': 'footnote-backref'}):
