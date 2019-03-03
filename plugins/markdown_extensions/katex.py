@@ -17,6 +17,7 @@ KaTeX: https://github.com/Khan/KaTeX
 
 """
 
+
 import markdown
 from markdown.util import etree
 
@@ -51,7 +52,7 @@ class MathPattern(markdown.inlinepatterns.Pattern):
 
         return node
 
-class Katex_MD_Extension(markdown.Extension):
+class Katex(markdown.Extension):
 
     def extendMarkdown(self, md, md_globals):
 

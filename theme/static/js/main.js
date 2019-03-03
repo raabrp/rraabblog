@@ -21,9 +21,30 @@ What happens here:
 '''
 */
 
+// Allow interruption of onReady callbacks (for use with decryption)
+// event called by base template and by post-process-injected decryption routine
+
+var clearToEngage = true;
+var safetyOn = true;
+var executionQueue = [];
+
+function safeCallback(callback) {
+    return function() {
+        executionQueue.push(callback);
+        if (!safetyOn) {
+            while (executionQueue.length > 0) {
+                executionQueue.shift()();
+            }
+        }
+    };
+}
+
 // all scripts may use onReady rather than window.onload
 // to avoid conflict
 function onReady(callback) {
+
+    callback = safeCallback(callback);
+
     var registered = window.onload;
     if (document.readyState == 'complete') {
         callback();
@@ -37,6 +58,13 @@ function onReady(callback) {
         window.onload = function() {
             callback();
         };
+    }
+}
+
+function engage() {
+    if (clearToEngage) {
+        safetyOn = false;
+        onReady(function() {;});
     }
 }
 
@@ -91,9 +119,17 @@ onReady(function() {
         }
 
         var doMouseover = function() {
-            document.getElementById(
+
+            var target =  document.getElementById(
                 this.getAttribute('href').replace('#', '')
-            ).classList.add('active-ref');
+            );
+
+            // only if reference not already in view
+            var window_bottom = scrollY + window.innerHeight;
+            if (target.getBoundingClientRect().y > window_bottom) {
+                target.classList.add('active-ref');
+            }
+
         };
         var doMouseout = function() {
             document.getElementById(
@@ -152,18 +188,19 @@ function bindScrollTriggers(element, over_cb, out_cb) {
         // store coordinates relative to document
         scroll_listener.top = rect.top + scrollY;
         scroll_listener.bottom = rect.bottom + scrollY;
+
     };
 
     window.addEventListener('scroll', scroll_listener);
     window.addEventListener('resize', resize_listener);
     resize_listener();
 
-    onReady(function() {
-        window.scrollTo(window.scrollX, window.scrollY - 1);
-        window.scrollTo(window.scrollX, window.scrollY + 1);
-    });
+    // trigger scroll event
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
 
 }
+
 /*       _          _                 _   _
  *      / \   _ __ (_)_ __ ___   __ _| |_(_) ___  _ __  ___
  *     / _ \ | '_ \| | '_ ` _ \ / _` | __| |/ _ \| '_ \/ __|
@@ -191,6 +228,7 @@ function addAnimation(update_func) {
     _animation_frame_counts.push(0);
 
     if (!_animation_loop_running) {
+        // start animation
         window.requestAnimationFrame(_doAnimation);
     }
 };
@@ -218,6 +256,7 @@ function _doAnimation() {
     if (_animations) {
         window.requestAnimationFrame(_doAnimation);
     } else {
+        // no active animations. Wait for one to be added.
         _animation_loop_running = false;
     }
 }
@@ -230,13 +269,13 @@ function _doAnimation() {
  */
 
 var mouseDown = 0;
-onReady(function() {
-    document.body.onmousedown = function() {
-        ++mouseDown;
-    };
-    document.body.onmouseup = function() {
-        --mouseDown;
-    };
+onReady(function(){
+    document.body.addEventListener("mousedown", function() {
+        mouseDown = 1;
+    });
+    document.body.addEventListener("mouseup", function() {
+        mouseDown = 0;
+    });
 });
 
 /*  ___

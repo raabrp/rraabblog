@@ -9,5 +9,5 @@ PORT=8088
 pelican -r &
 
 # http server
-xdg-open "http://0.0.0.0:$PORT"
+# xdg-open "http://0.0.0.0:$PORT"
 light-server -s public -p "$PORT" -w "** # # reload"

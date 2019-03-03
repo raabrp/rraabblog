@@ -33,12 +33,13 @@ header > p {
  *     ARTICLE
  */
 article {
-    line-height: 1.5em;
+    line-height: 1.4em;
 }
 
 img, svg, .svg-container {
     display: block;
     max-width: 100%;
+    width: 100%;
     margin: auto;
 }
 
@@ -81,9 +82,9 @@ blockquote {
  */
 pre {
     line-height: 1.4em;
-    overflow: auto;
     padding-top: 1em;
     padding-bottom: 1em;
+    overflow-x: auto; /* for mobile */
     -webkit-overflow-scrolling: touch;
 }
 
@@ -145,7 +146,6 @@ table {
  */
 main {
     position: relative;
-    max-width: 66ch;
     padding-left: 2ch;
     padding-right: 2ch;
     margin: auto;
@@ -168,17 +168,17 @@ main {
 }
 
 /*
- * Desktop ( > 200 charcters width)
+ * Desktop ( > 190 charcters width)
  *
  * Place TOC on left
- * Distribute text
  */
-@media (min-width: 180ch) {
+@media (min-width: 190ch) {
 
+    /*
     article {
-        /* text-align: justify; */
+        text-align: justify;
         text-justify: distribute;
-    }
+    }*/
 
     div.toc {
         text-align: left;

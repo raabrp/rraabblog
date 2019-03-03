@@ -1,12 +1,11 @@
 ---
-title: Markdown Demo
-slug: demo
+title: Encryption Demo
+slug: encrypted
+password: encrypted
 date: 2018-01-01
 ---
 
-<h2>(How I write my content)</h2>
-
-Original markdown source for this page hosted [here](/demo.text) for inspection.
+<h2>(Demonstration of encrypted content)</h2>
 
 ***
 
@@ -19,22 +18,26 @@ The top of this file includes
 
 ```
 ---
-title: Markdown Demo
-slug: demo
+title: Encryption Demo
+slug: encrypted
+password: encrypted
 date: 2018-01-01
 ---
 
 [TOC]
+
 ```
 
-***
+| Line       | Explanation                                               |
+|------------|-----------------------------------------------------------|
+| `title`    | Appears at top of page and title of browser tab           |
+| `slug`     | Path of generated html file relative to website root      |
+| `password` | Password to decrypt generated page                        |
+| `date`     | Date shown at top and sorted by on index page             |
+| `[TOC]`    | Generates Table of Contents (at this location for mobile) |
 
-| Line    | Explanation                                               |
-|---------|-----------------------------------------------------------|
-| `title` | Appears at top of page and title of browser tab           |
-| `slug`  | Path of generated html file relative to website root      |
-| `date`  | Date shown at top and sorted by on index page             |
-| `[TOC]` | Generates Table of Contents (at this location for mobile) |
+Note that encrypted pages are not linked from the index page, nor is the
+unprocessed source copied to the public directory.
 
 # Header 1
 
@@ -650,10 +653,11 @@ this.animate_periodic_with(200, function(p) {
 I've used [twgl.js](https://twgljs.org) to allow me to play with fragment 
 shaders.
 
-<twgl id="julia">
+<twgl id="mandelbrot">
+ 
  precision mediump float;
 
- // default uniforms (built in)
+ // uniforms automatically handled behind the scenes
  uniform vec2 resolution;
  uniform float min_dim;
  uniform bool mouseover;
@@ -662,18 +666,14 @@ shaders.
  uniform vec2 mouse_click;
  uniform float click_elapsed;
 
- vec2 c = mouse;
- float p = max(0., 1000. - click_elapsed) / 1000.;
-
- const int iter = 130;
- const float fiter = 130.;
-
- /*
-  * map interval [0, 1] to RGB color
-  * use YCoCg color space for simplicity
-  * https://en.wikipedia.org/wiki/YCoCg 
-  */
+ vec2 z0 = vec2(mouse.x - 0.5, mouse.y);
+ 
  vec3 colormap(float v) {
+     // map interval [0, 1] to color
+     //
+     // use YCoCg color space for simplicity
+     // https://en.wikipedia.org/wiki/YCoCg 
+     
      float Y = pow(1. - pow(v - 1., 2.), 2.); // logistic on v [0, 1] -> [0, 1]
      float cr = (1. - cos(6.283 * v)) / 2.;   // radius in "hue space"
      float Cg = cr * sin(4. * Y + 3.);        // in [-1, 1]
@@ -685,56 +685,25 @@ shaders.
      return vec3(R, G, B);
  }
 
- /* multiply two complex numbers */
- vec2 c_mul(vec2 x, vec2 y) {
-     vec2 z;
-     
-     z.x = x.x * y.x - x.y * y.y;
-     z.y = x.x * y.y + x.y * y.x;
-     
-     return z;
- }
- 
- /* raise complex number to power e */
- const int MAX_EXPONENT = 10;
- vec2 c_pow(vec2 x, int e) {
- 
-     vec2 y = vec2(1.0, 0.0);
- 
-     for(int i=0; i < MAX_EXPONENT; i++) {
-      
-         if (i >= e) { break; }
-      
-         y = c_mul(y, x);
-     
-     }
-     
-     return y;
-
- }
- 
- /* get magnitude-squared of 2-vector */
- float mag2(vec2 z) {
-     return (z.x * z.x + z.y * z.y);
- }
-
- float iterate(vec2 z) {
-
-     /* Compute map on z and c up to max iteration */
+ // iteration count
+ const int iter = 100;
+ const float fiter = 100.;
+ float iterate(vec2 z, vec2 c) {
 
      vec2 w;
-     float v;
      float r2;
+     float v;
 
      // iterate map
      for(int i=0; i < iter; i++) {
 
-         w = c_pow(z, 2) + c;
+         // complex multiplication (^2)
+         w.x = (z.x * z.x - z.y * z.y) + c.x;
+         w.y = (2. * z.y * z.x)        + c.y;
 
          v = float(i);
-         r2 = mag2(w);
+         r2 = (w.x * w.x + w.y * w.y);
 
-         // bailout radius
          if(r2 > 5.0) {
              break;
          }
@@ -746,345 +715,58 @@ shaders.
      if (v == (fiter - 1.)) {
          v = v / fiter;
      } else {
-         v = (v - log2( log(r2) / log(5.))) / fiter;
+         v = (v - log2(log(r2)) * 0.5) / fiter;
      }
 
      return v;
 
  }
 
- float single_point(vec2 z) {
-     
-     /*
-      * Compute value for single point, allowing
-      * for parameterization of mapping with cut
-      *
-      * Call multiple times for anti-aliasing
-      */
-
-     float r2;
-     float a;
-     float theta;
-
-     float theta2;
-     vec2 zcut;
-     float v = 0.;
-
-     float rc2 = (z.x - c.x) * (z.x - c.x) + (z.y - c.y) * (z.y - c.y);
-      
-     // display c
-     if (rc2 < 0.0001) {
-         return 0.0;
-     }
-
-     // apply parameterized, partial inverse mapping
-     // so we can visualize the map
-     if (p > 0.) {
-
-         z.x = z.x + (p - 1.) * c.x;
-         z.y = z.y + (p - 1.) * c.y;
-
-         a = 1.0 - 0.5 * (1. - p);
-         r2 = z.x * z.x + z.y * z.y;
-
-         theta = a * atan(z.y, z.x);
-         z.y = pow(r2, a / 2.) * sin(theta);
-         z.x = pow(r2, a / 2.) * cos(theta);
-
-         theta2 = theta + sign(z.y) * 3.14159 * (1. - p);
-         zcut.y = pow(r2, a / 2.) * sin(theta2);
-         zcut.x = pow(r2, a / 2.) * cos(theta2);
-
-         if (sign(zcut.y) != sign(z.y)) {
-             v = iterate(zcut);
-         }
-         
-     }
-
-     return max(v, iterate(z));
-     
- }
-
  void main() {
 
-     float v = 0.;
-     
-     // 4-Rook Antialiasing
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x + 0.125)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y + 0.375)) - resolution.y) / min_dim
-         )
-     );
-     /*
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x + 0.375)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y - 0.125)) - resolution.y) / min_dim
-         )
-     );
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x - 0.125)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y - 0.375)) - resolution.y) / min_dim
-         )
-     );
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x - 0.375)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y + 0.125)) - resolution.y) / min_dim
-         )
-     ); */
-     
-     vec4 value = vec4(colormap(v / 1.0), 1.0);
-     
-     // with antialiasing
-     // vec4 value = vec4(colormap(v / 4.0), 1.0);
+     vec2 c = vec2(((2. * gl_FragCoord.x) - resolution.x) / min_dim - 0.5,
+                   ((2. * gl_FragCoord.y) - resolution.y) / min_dim);
+
+     float v = iterate(z0, c);
+
+     float rc2 = (z0.x - c.x) * (z0.x - c.x) + (z0.y - c.y) * (z0.y - c.y);
+ 
+     vec4 value = vec4(colormap(v), 1.0);
+
+     // display control point
+     if (rc2 < 0.0001) {
+         value = vec4(0.5, 0.5, 0.5, 1.0);
+     }
 
      gl_FragColor = value;
 }
  
 </twgl>
-
-```GLSL
-<twgl id="julia">
- precision mediump float;
-
- // default uniforms (built in)
- uniform vec2 resolution;
- uniform float min_dim;
- uniform bool mouseover;
- uniform bool mousedown;
- uniform vec2 mouse;
- uniform vec2 mouse_click;
- uniform float click_elapsed;
-
- vec2 c = mouse;
- float p = max(0., 1000. - click_elapsed) / 1000.;
-
- const int iter = 130;
- const float fiter = 130.;
-
- /*
-  * map interval [0, 1] to RGB color
-  * use YCoCg color space for simplicity
-  * https://en.wikipedia.org/wiki/YCoCg 
-  */
- vec3 colormap(float v) {
-     float Y = pow(1. - pow(v - 1., 2.), 2.); // logistic on v [0, 1] -> [0, 1]
-     float cr = (1. - cos(6.283 * v)) / 2.;   // radius in "hue space"
-     float Cg = cr * sin(4. * Y + 3.);        // in [-1, 1]
-     float Co = cr * cos(4. * Y + 3.);        // in [-1, 1]
-     float R = Y + Co - Cg;
-     float G = Y + Cg;
-     float B = Y - Co - Cg;
-
-     return vec3(R, G, B);
- }
-
- /* multiply two complex numbers */
- vec2 c_mul(vec2 x, vec2 y) {
-     vec2 z;
-     
-     z.x = x.x * y.x - x.y * y.y;
-     z.y = x.x * y.y + x.y * y.x;
-     
-     return z;
- }
- 
- /* raise complex number to power e */
- const int MAX_EXPONENT = 10;
- vec2 c_pow(vec2 x, int e) {
- 
-     vec2 y = vec2(1.0, 0.0);
- 
-     for(int i=0; i < MAX_EXPONENT; i++) {
-      
-         if (i >= e) { break; }
-      
-         y = c_mul(y, x);
-     
-     }
-     
-     return y;
-
- }
- 
- /* get magnitude-squared of 2-vector */
- float mag2(vec2 z) {
-     return (z.x * z.x + z.y * z.y);
- }
-
- float iterate(vec2 z) {
-
-     /* Compute map on z and c up to max iteration */
-
-     vec2 w;
-     float v;
-     float r2;
-
-     // iterate map
-     for(int i=0; i < iter; i++) {
-
-         w = c_pow(z, 2) + c;
-
-         v = float(i);
-         r2 = mag2(w);
-
-         // bailout radius
-         if(r2 > 5.0) {
-             break;
-         }
-         z.x = w.x;
-         z.y = w.y;
-     }
-
-     // "real" iteration number using potential function
-     if (v == (fiter - 1.)) {
-         v = v / fiter;
-     } else {
-         v = (v - log2( log(r2) / log(5.))) / fiter;
-     }
-
-     return v;
-
- }
-
- float single_point(vec2 z) {
-     
-     /*
-      * Compute value for single point, allowing
-      * for parameterization of mapping with cut
-      *
-      * Call multiple times for anti-aliasing
-      */
-
-     float r2;
-     float a;
-     float theta;
-
-     float theta2;
-     vec2 zcut;
-     float v = 0.;
-
-     float rc2 = (z.x - c.x) * (z.x - c.x) + (z.y - c.y) * (z.y - c.y);
-      
-     // display c
-     if (rc2 < 0.0001) {
-         return 0.0;
-     }
-
-     // apply parameterized, partial inverse mapping
-     // so we can visualize the map
-     if (p > 0.) {
-
-         z.x = z.x + (p - 1.) * c.x;
-         z.y = z.y + (p - 1.) * c.y;
-
-         a = 1.0 - 0.5 * (1. - p);
-         r2 = z.x * z.x + z.y * z.y;
-
-         theta = a * atan(z.y, z.x);
-         z.y = pow(r2, a / 2.) * sin(theta);
-         z.x = pow(r2, a / 2.) * cos(theta);
-
-         theta2 = theta + sign(z.y) * 3.14159 * (1. - p);
-         zcut.y = pow(r2, a / 2.) * sin(theta2);
-         zcut.x = pow(r2, a / 2.) * cos(theta2);
-
-         if (sign(zcut.y) != sign(z.y)) {
-             v = iterate(zcut);
-         }
-         
-     }
-
-     return max(v, iterate(z));
-     
- }
-
- void main() {
-
-     float v = 0.;
-     
-     // 4-Rook Antialiasing
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x + 0.125)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y + 0.375)) - resolution.y) / min_dim
-         )
-     );
-     /*
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x + 0.375)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y - 0.125)) - resolution.y) / min_dim
-         )
-     );
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x - 0.125)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y - 0.375)) - resolution.y) / min_dim
-         )
-     );
-     v += single_point(
-         vec2(
-             ((2. * (gl_FragCoord.x - 0.375)) - resolution.x) / min_dim,
-             ((2. * (gl_FragCoord.y + 0.125)) - resolution.y) / min_dim
-         )
-     ); */
-     
-     vec4 value = vec4(colormap(v / 1.0), 1.0);
-     
-     // with antialiasing
-     // vec4 value = vec4(colormap(v / 4.0), 1.0);
-
-     gl_FragColor = value;
-}
- 
-</twgl>
-```
 
 <script>
 onReady(function() {
 
- var julia = shaders['julia'];
+ var man = shaders['mandelbrot'];
+ 
+ man.uniforms.mouse = [0.5, 0];
     
- var k = 1 / 30;
- var c0 = 2 * Math.sqrt(k); // critical damping
- var c = c0 * 0.8 // slightly under damped
- var qx = 0;
- var qy = 0;
- var px = 0;
- var py = 0;
-     
  var first_run = false;
  function render(frame_number, time) {
-
-     var u = {}
-     Object.setPrototypeOf(u, julia.uniforms);
-     u.mouse = [0, 0];
-     
+    
+     // render a first time
      if (!first_run) {
          first_run = true;
-         julia.render(u);
-     } else if (u.mouseover) {
-        
-         var ax = k * (julia.uniforms.mouse[0] - qx) - c * px;
-         var ay = k * (julia.uniforms.mouse[1] - qy) - c * py; 
-         qx += px;
-         qy += py;
-         px += ax;
-         py += ay;
-          
-         u.mouse[0] = qx;
-         u.mouse[1] = qy;
-          
-         julia.render(u);
+         man.render(man.uniforms);
      } 
+     // render only when mouse is over
+     else if (man.uniforms.mouseover) {
+         man.render(man.uniforms);
+     }
  }
- 
+
+ // only render when in view
  bindScrollTriggers(
-     julia.gl.canvas,
+     man.gl.canvas,
      function(){ 
          addAnimation(render);
      },
@@ -1096,49 +778,122 @@ onReady(function() {
 });
 </script>
 
+```GLSL
+<twgl id="mandelbrot">
+ 
+ precision mediump float;
 
+ // uniforms automatically handled behind the scenes
+ uniform vec2 resolution;
+ uniform float min_dim;
+ uniform bool mouseover;
+ uniform bool mousedown;
+ uniform vec2 mouse;
+ uniform vec2 mouse_click;
+ uniform float click_elapsed;
+
+ vec2 z0 = vec2(mouse.x - 0.5, mouse.y);
+ 
+ vec3 colormap(float v) {
+     // map interval [0, 1] to color
+     //
+     // use YCoCg color space for simplicity
+     // https://en.wikipedia.org/wiki/YCoCg 
+     
+     float Y = pow(1. - pow(v - 1., 2.), 2.); // logistic on v [0, 1] -> [0, 1]
+     float cr = (1. - cos(6.283 * v)) / 2.;   // radius in "hue space"
+     float Cg = cr * sin(4. * Y + 3.);        // in [-1, 1]
+     float Co = cr * cos(4. * Y + 3.);        // in [-1, 1]
+     float R = Y + Co - Cg;
+     float G = Y + Cg;
+     float B = Y - Co - Cg;
+
+     return vec3(R, G, B);
+ }
+
+ // iteration count
+ const int iter = 100;
+ const float fiter = 100.;
+ float iterate(vec2 z, vec2 c) {
+
+     vec2 w;
+     float r2;
+     float v;
+
+     // iterate map
+     for(int i=0; i < iter; i++) {
+
+         // complex multiplication (^2)
+         w.x = (z.x * z.x - z.y * z.y) + c.x;
+         w.y = (2. * z.y * z.x)        + c.y;
+
+         v = float(i);
+         r2 = (w.x * w.x + w.y * w.y);
+
+         if(r2 > 5.0) {
+             break;
+         }
+         z.x = w.x;
+         z.y = w.y;
+     }
+
+     // "real" iteration number using potential function
+     if (v == (fiter - 1.)) {
+         v = v / fiter;
+     } else {
+         v = (v - log2(log(r2)) * 0.5) / fiter;
+     }
+
+     return v;
+
+ }
+
+ void main() {
+
+     vec2 c = vec2(((2. * gl_FragCoord.x) - resolution.x) / min_dim - 0.5,
+                   ((2. * gl_FragCoord.y) - resolution.y) / min_dim);
+
+     float v = iterate(z0, c);
+
+     float rc2 = (z0.x - c.x) * (z0.x - c.x) + (z0.y - c.y) * (z0.y - c.y);
+ 
+     vec4 value = vec4(colormap(v), 1.0);
+
+     // display control point
+     if (rc2 < 0.0001) {
+         value = vec4(0.5, 0.5, 0.5, 1.0);
+     }
+
+     gl_FragColor = value;
+}
+ 
+</twgl>
+```
 ```javascript
 <script>
 onReady(function() {
 
- var julia = shaders['julia'];
+ var man = shaders['mandelbrot'];
+ 
+ man.uniforms.mouse = [0.5, 0];
     
- var k = 1 / 30;
- var c0 = 2 * Math.sqrt(k); // critical damping
- var c = c0 * 0.8 // slightly under damped
- var qx = 0;
- var qy = 0;
- var px = 0;
- var py = 0;
-     
  var first_run = false;
  function render(frame_number, time) {
-
-     var u = {}
-     Object.setPrototypeOf(u, julia.uniforms);
-     u.mouse = [0, 0];
-     
+    
+     // render a first time
      if (!first_run) {
          first_run = true;
-         julia.render(u);
-     } else if (u.mouseover) {
-        
-         var ax = k * (julia.uniforms.mouse[0] - qx) - c * px;
-         var ay = k * (julia.uniforms.mouse[1] - qy) - c * py; 
-         qx += px;
-         qy += py;
-         px += ax;
-         py += ay;
-          
-         u.mouse[0] = qx;
-         u.mouse[1] = qy;
-          
-         julia.render(u);
+         man.render(man.uniforms);
      } 
+     // render only when mouse is over
+     else if (man.uniforms.mouseover) {
+         man.render(man.uniforms);
+     }
  }
- 
+
+ // only render when in view
  bindScrollTriggers(
-     julia.gl.canvas,
+     man.gl.canvas,
      function(){ 
          addAnimation(render);
      },

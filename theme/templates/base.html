@@ -9,6 +9,8 @@
       {% block title %}{{ SITENAME }}{% endblock title %}
     </title>
 
+    <link rel="shortcut icon" href="static/favicon.png">
+
     <!-- CSS for Layout -->
     <link rel="stylesheet" type="text/css" href="theme/css/katex.min.css">
     <link rel="stylesheet" type="text/css" href="theme/css/charts.css">
@@ -21,8 +23,10 @@
     <link rel="stylesheet" type="text/css" id="{{ theme }}-theme-css"
           class="color-css" href="theme/css/colors/color-{{ theme }}.css">
     {% endfor %}
+    <link rel="stylesheet" type="text/css" href="theme/css/colors/pygments.css">
 
     <link rel="stylesheet" type="text/css" href="theme/css/colors.css">
+
 
     {% if REMOTE_FONT_URL %}
     <!--
@@ -32,6 +36,9 @@
     -->
     <link rel="stylesheet"
           href="{{ REMOTE_FONT_URL }}">
+    {% else %}
+    <link rel="stylesheet"
+          href="theme/css/fonts.css">
     {% endif %}
 
     <!-- JS for Color Theming -->
@@ -107,7 +114,7 @@
                   <a href="index.html">Home</a>
                 </li>
                 {% for page in pages %}
-                {% if not page.standalone %}
+                {% if not page.project %}
                 <li>
                   <a href="{{ page.slug }}.html">
                     {{ page.title }}
@@ -139,10 +146,8 @@
       {% endblock content %}
     </main>
 
-    {% block script %}
-    {% endblock script %}
     <script type="text/javascript">
-     onReady(_doAnimation);
+     engage();
     </script>
   </body>
 

@@ -45,6 +45,11 @@ online at https://raabrp.github.io or https://reillyraab.com
     * [pygments](http://pygments.org/)
     * [python-bond](https://www.thregr.org/~wavexx/software/python-bond/)
     * [beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+    * [pbkdf2](https://www.dlitz.net/software/python-pbkdf2/)
+    * [pycrypto](https://pypi.org/project/pycrypto/)
+
+pbkdf2 and pycrypto are used only when generating password-protected content.
+(The password for the encryption demo in `content_example` is `encrypted`)
 
 * [npm/node.js](https://www.npmjs.com/get-npm)
     * [katex](https://github.com/Khan/KaTeX)
@@ -57,6 +62,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 * Install requirements
 
         pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
+        pip3 install --user pbkdf2 pycrypto
         sudo npm install -g katex light-server
 
     Personal note: I had to make sure to include
@@ -82,22 +88,25 @@ pages](https://pages.github.com))
 
 ### Custom Domains
 
-See https://reillyraab.com/about.html#technical for how I've set things up for
-myself in terms of hosting with my own domain name. A technical step not 
-mentioned there is the inclusion of a file called `CNAME` in `/public` 
-(containing only the text `reillyraab.com`). See 
-[CNAME](https://en.wikipedia.org/wiki/CNAME_record)
+I use:
+* [github pages](https://pages.github.com) for hosting, as mentioned.
+* [namecheap](https://www.namecheap.com) for domain registration / nameservers.
+* [cloudflare](https://www.cloudflare.com) for dns, caching, and SSL.
+
+My `public` directory has a file called 
+[`CNAME`](https://en.wikipedia.org/wiki/CNAME_record) containing only
+`reillyraab.com`.
 
 # Usage
 
 * run `./run.sh` in the repo root
 * edit the `content` directory and see auto-refreshed results in the browser
 * navigate to `/public`, commit your changes, and push.
-    * e.g. `git commit -a -m "Added limited bio to About page"`
+    * e.g. `git commit -a -m "Notes about commit"`
     * e.g. `git push`
     
-For those still learning to use git (we were all here once), Atlassian has a 
-decent [tutorial](https://www.atlassian.com/git/tutorials/saving-changes).
+For those learning to use git (we were all here once), Atlassian has a decent
+[tutorial](https://www.atlassian.com/git/tutorials/saving-changes).
 
 Finally, dig through `pelicanconf.py`, `/theme`, and `/plugins` and feel free to
 make them your own. I've attempted to document them appropriately.

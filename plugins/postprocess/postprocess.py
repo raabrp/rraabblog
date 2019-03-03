@@ -26,11 +26,18 @@ import re
 import math
 import datetime
 import sys, traceback, io
+
 from bs4 import BeautifulSoup
 
 from urllib import parse as urlparse
 
 from pelican import signals
+
+from .encrypt import encrypt
+from .d3 import d3
+from .twgl import twgl
+from .mol import molecule
+
 
 BELL = '\u0007' # terminal bell
 
@@ -102,25 +109,25 @@ def get_context_string(content_object, target):
     # get last sentence and remove extra spaces
     return ' '.join(prev_string.split(BELL)[-1].split())
 
-
 @independent_traceback
 def process_soup(content_object):
     if content_object._content is None:
         return
 
+    soup = BeautifulSoup(content_object._content, 'html.parser')
+
+    # distinguish pages from projects
+    setattr(content_object, 'project', (
+        'projects' in content_object.source_path.split(os.sep)
+    ))
+
+    # last_updated formatting
     if hasattr(content_object, 'last_updated'):
         content_object.last_updated = datetime.datetime.strptime(
             content_object.last_updated, '%Y-%m-%d'
         )
     else:
         content_object.last_updated = content_object.date
-
-    # distinguish pages from projects
-    setattr(content_object, 'standalone', (
-        'projects' in content_object.source_path.split(os.sep)
-    ))
-
-    soup = BeautifulSoup(content_object._content, 'html.parser')
 
     # estimate readtime
     content_object.readtime = {
@@ -134,7 +141,7 @@ def process_soup(content_object):
             l.attrs['id'] = "generated-link-id" + str(a_id)
             a_id += 1
 
-    # collect links
+    # collect links as metadata
     all_links = [l for l in soup.find_all('a') if ('href' in l.attrs)]
     content_object.links = [
         parse_link(content_object, l) for l in all_links if any([
@@ -158,36 +165,6 @@ def process_soup(content_object):
                 'html.parser'
             )
         )
-
-    # inlinesvg
-    isvg_id = 0
-    for isvg in soup.find_all('inlinesvg'):
-        img_src = isvg.attrs['src']
-
-        if not 'id' in isvg.attrs:
-            isvg.attrs['id'] = "generated-isvg-id" + str(isvg_id)
-            isvg_id += 1
-
-        with open(img_src) as f:
-            content = f.read()
-
-        s = BeautifulSoup(content, 'html.parser')
-
-        r = s.find('svg')
-
-        r.attrs['id'] = isvg.attrs['id']
-
-        if 'width' in r.attrs:
-            del(r.attrs['width'])
-        if 'height' in r.attrs:
-            del(r.attrs['height'])
-
-        if 'class' in isvg.attrs:
-            r.attrs['class'] = isvg.attrs['class']
-        else:
-            r.attrs['class'] = 'inlinesvg'
-
-        isvg.replaceWith(s)
 
     # preview for Wikipedia links
     for a in soup.find_all('a'):
@@ -217,10 +194,9 @@ def process_soup(content_object):
             backref.extract()
             continue
 
-        backref.attrs['title'] = get_context_string(content_object, target)
-
-    def myfunc(x):
-        return x.strip()
+        refcontext = get_context_string(content_object, target)
+        if refcontext:
+            backref.attrs['title'] = refcontext
 
     # prettify the math items
     for math_item in soup.find_all(attrs={'class': 'math'}):
@@ -238,4 +214,83 @@ def process_soup(content_object):
             'html.parser')
         )
 
-    content_object._content = soup.decode()
+    # rainbow parentheses for codehilite
+    for code in soup.find_all('div', {'class': 'codehilite'}):
+
+        rainbow = 0
+
+        for p in code.find_all('span', {'class': 'p'}):
+
+            rep = ''
+
+            for char in p.get_text():
+
+                if char in '({[':
+                    rainbow = (rainbow + 1) % 9
+                    rep += '<span class="hlrb{0}">{1}</span>'.format(
+                        rainbow,
+                        char
+                    )
+                elif char in ')]}':
+                    rep += '<span class="hlrb{0}">{1}</span>'.format(
+                        rainbow,
+                        char
+                    )
+                    rainbow = (rainbow - 1) % 9
+                else:
+                    rep += '<span class="p">{}</span>'.format(char)
+
+            p.replaceWith(BeautifulSoup(rep, 'html.parser'))
+
+    # d3
+    d3(content_object, soup)
+
+    # twgl
+    twgl(content_object, soup)
+
+    # molecule render molecules nicely
+    molecule(content_object, soup)
+
+    # inject script dependencies
+    def attr_needs_scripts(attr, block):
+        if hasattr(content_object, attr) and getattr(content_object, attr):
+            injection = BeautifulSoup(block, 'html.parser')
+            soup.contents.append(injection)
+
+    attr_needs_scripts(
+        'd3',
+        """
+<script src="theme/js/lib/d3.v5.min.js"></script>
+<script src="theme/js/lib/simplify.js"></script>
+<script src="theme/js/charts.js"></script>
+<script src="theme/js/chart_components.js"></script>
+"""
+    )
+    attr_needs_scripts(
+        'speck',
+        """
+<script src="theme/js/lib/virtual-webgl.js"></script>
+<script src="theme/js/lib/glMatrix.js"></script>
+<script src="theme/js/lib/speck.js"></script>
+"""
+    )
+    attr_needs_scripts(
+        'twgl',
+        """
+<script src="theme/js/lib/twgl.min.js"></script>
+<script src="theme/js/minshader.js"></script>
+<script id="twgl_vs" type="x-shader/x-vertex">
+ attribute vec4 position;
+
+ void main() {
+     gl_Position = position;
+}
+</script>
+"""
+    )
+
+    # optionally password protect drafts
+    if hasattr(content_object, 'password'):
+        encrypt(content_object, soup)
+    else:
+        content_object._content = soup.decode()

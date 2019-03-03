@@ -4,43 +4,18 @@
 
 {% block content %}
 <header>
-    <h1>
+    <h1 id="title-header">
         {{ article.title }}
     </h1>
     <p>
         Estimated read time: {{ article.readtime.minutes }} minutes
     </p>
     <p>
-        Publish Date: {{ article.date.strftime('%Y %B %d') }} <br>
+        Publish Date: {{ article.date.strftime('%Y %B %d') }} <br><br>
         Last Updated: {{ article.last_updated.strftime('%Y %B %d') }}
     </p>
 </header>
 <article>
     {{ article.content }}
 </article>
-{% endblock %}
-
-{% block script %}
-
-{% if article.d3 %}
-<!-- For Charts -->
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="theme/js/simplify.js"></script>
-<script src="theme/js/charts.js"></script>
-<script src="theme/js/chart_components.js"></script>
-{% endif %}
-
-{% if article.twgl %}
-<!-- For Webgl -->
-<script src="/js/twgl.min.js"></script>
-<script src="/js/minshader.js"></script>
-<script id="twgl_vs" type="x-shader/x-vertex">
- attribute vec4 position;
-
- void main() {
-     gl_Position = position;
- }
-</script>
-{% endif %}
-
 {% endblock %}

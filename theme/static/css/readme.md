@@ -3,7 +3,7 @@
 * main        - layout
 * page        - if pages should differ from articles
 * decorations - borders, font, etc
-* interactive - dynamic content. menu, hover, tooltips, etc.
+* interactive - dynamic content. menu, hover, etc.
 * color-x-y   - colors
 
 # Color

@@ -16,13 +16,15 @@
     <h2>
         Articles
     </h2>
-    <ul>
-        {% for article in articles | sort(attribute='date', reverse=True) %}
+    <ul class="toc">
+        {% for article in articles | sort(attribute='date') %}
         <li>
             <p>
-                <span style="font-family: monospace;">
-                    ({{ article.date.strftime('%Y %b %d') }})
-                </span>
+                <!--
+                     <span style="font-family: monospace;">
+                     ({{ article.date.strftime('%Y %b %d') }})
+                     </span>
+                -->
                 <a href="{{ article.slug }}.html">
                     {{ article.title }}
                 </a>
@@ -33,9 +35,9 @@
     <h2>
         Pages
     </h2>
-    <ul>
-        {% for page in pages %}
-        {% if not page.standalone %}
+    <ul class="toc">
+        {% for page in pages | sort(attribute='date') %}
+        {% if not page.project %}
         <li>
             <p>
                 <a href="{{ page.slug }}.html">
@@ -49,9 +51,9 @@
     <h2>
         Projects
     </h2>
-    <ul>
-        {% for page in pages %}
-        {% if page.standalone %}
+    <ul class="toc">
+        {% for page in pages | sort(attribute='date') %}
+        {% if page.project %}
         <li>
             <p>
                 <a href="{{ page.slug }}.html">

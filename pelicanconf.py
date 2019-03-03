@@ -21,9 +21,14 @@ import sys
 import json
 import markdown
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(
+    os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        'plugins'
+    )
+)
 
-import plugins
+import markdown_extensions
 
 AUTHOR = 'Reilly Raab'
 TIMEZONE = 'UTC'
@@ -36,7 +41,7 @@ DEFAULT_LANG = 'en'
 # expected to have `articles` and `pages` subdirectories
 PATH = 'content'
 # additional subdirectories which are merely copied to output
-STATIC_PATHS = ['images', 'static', 'js', 'css']
+STATIC_PATHS = ['images', 'hosted', 'js', 'css']
 # File patterns which are ignored
 IGNORE_FILES = ['.#*', '__pycache__']
 
@@ -61,9 +66,8 @@ OUTPUT_SOURCES = True
 # Markdown settings
 MARKDOWN = {
     'extensions': [
-        plugins.D3_MD_Extension(),     # inject D3 when needed
-        plugins.Katex_MD_Extension(),  # process math with katex
-        plugins.TWGL_MD_Extension(),   # inject TWGL when needed
+        markdown_extensions.Katex(),  # process math with katex
+        markdown_extensions.Custom(),  # process math with katex
         'toc',         # table of contents
         'footnotes',   # footnotes
         'tables',      # tables
@@ -95,7 +99,8 @@ AUTHOR_SAVE_AS = ''
 FEEDS_SAVE_AS = ''
 
 # These templates render directly as independent output
-DIRECT_TEMPLATES = ['index', 'links']
+# DIRECT_TEMPLATES = ['index', 'links'] # 'links' lists all external links
+DIRECT_TEMPLATES = ['index']
 
 # Suppress unused utilities which Pelican provides
 FEED_ALL_ATOM = None
@@ -111,7 +116,7 @@ DEFAULT_PAGINATION = False
 # Personal variable injections
 
 # Third party fonts
-REMOTE_FONT_URL = "https://fonts.googleapis.com/css?family=Raleway:600i|Roboto"
+# REMOTE_FONT_URL = "https://fonts.googleapis.com/css?family=Roboto"
 
 # collect names of css files used for color themes
 color_prefix = "color-"

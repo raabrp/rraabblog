@@ -1,2 +1,3 @@
 * Mathbox integration
-* Integrate spell/grammar checking
+* Spelling/grammar/pomposity checking of content
+* Broken links detection
