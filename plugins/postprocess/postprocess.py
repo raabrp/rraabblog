@@ -260,7 +260,7 @@ def process_soup(content_object):
     attr_needs_scripts(
         'd3',
         """
-<script src="theme/js/lib/d3.v5.min.js"></script>
+<script src="theme/js/lib/d3.js"></script>
 <script src="theme/js/lib/simplify.js"></script>
 <script src="theme/js/charts.js"></script>
 <script src="theme/js/chart_components.js"></script>
@@ -277,7 +277,7 @@ def process_soup(content_object):
     attr_needs_scripts(
         'twgl',
         """
-<script src="theme/js/lib/twgl.min.js"></script>
+<script src="theme/js/lib/twgl.js"></script>
 <script src="theme/js/minshader.js"></script>
 <script id="twgl_vs" type="x-shader/x-vertex">
  attribute vec4 position;
