@@ -7,13 +7,17 @@
     display: none;
 }
 
-/* global links */
+/* links */
 a {
     text-decoration: none;
 }
 a:hover {
     text-decoration: underline;
 }
+.theme-selector {
+    cursor: pointer;
+}
+
 /* listed links */
 .toc li > a:only-child,
 .index li > a:only-child,
