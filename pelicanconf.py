@@ -16,6 +16,9 @@ What happens here:
 
 '''
 
+# TODO caching
+# https://docs.getpelican.com/en/stable/settings.html
+
 import os
 import sys
 import json

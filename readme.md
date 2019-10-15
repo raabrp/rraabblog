@@ -55,6 +55,9 @@ pbkdf2 and pycrypto are used only when generating password-protected content.
     * [katex](https://github.com/Khan/KaTeX)
     * [lightserver](https://www.npmjs.com/package/light-server)
 
+See [this](https://medium.com/@ExplosionPills/dont-use-sudo-with-npm-still-66e609f5f92)
+post on why `sudo npm` is worth avoiding (and how to not need it).
+
 ## Installation
 
 For me (using Linux and assuming `pip3` and `npm` commands are available):
@@ -63,7 +66,7 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
 
         pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
         pip3 install --user pbkdf2 pycrypto
-        sudo npm install -g katex light-server
+        npm install -g katex light-server
 
     Personal note: I had to make sure to include
         `~/.local/bin` in my PATH and set

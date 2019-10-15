@@ -117,7 +117,7 @@
                 {% if not page.project %}
                 <li>
                   <a href="{{ page.slug }}.html">
-                    {{ page.title }}
+                    {{ page.title | truncate(25) }}
                   </a>
                 </li>
                 {% endif %}

@@ -154,14 +154,21 @@ def process_soup(content_object):
     img_id = 0
     for img in soup.find_all('img'):
         img_src = img.attrs['src']
-        img_alt = img.attrs['alt']
+
+
+        caption = ''
+        if 'alt' in img.attrs:
+            caption = '\n<p class="caption">' + img.attrs['alt'] + '</p>'
+
         if not 'id' in img.attrs:
             img.attrs['id'] = "generated-img-id" + str(img_id)
             img_id += 0
+        if not 'width' in img.attrs:
+            img.attrs['width'] = "100%"
 
         img.replaceWith(
             BeautifulSoup(
-                img.decode() + '\n<p class="caption">' + img_alt + '</p>',
+                img.decode() + caption,
                 'html.parser'
             )
         )
