@@ -14,7 +14,23 @@
 </header>
 <article class="index">
     <h2>
-        Articles
+        Pages
+    </h2>
+    <ul class="toc">
+        {% for page in pages | sort(attribute='date') %}
+        {% if not page.project %}
+        <li>
+            <p>
+                <a href="{{ page.slug }}.html">
+                    {{ page.title }}
+                </a>
+            </p>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <h2>
+        Posts
     </h2>
     <ul class="toc">
         {% for article in articles | sort(attribute='date') %}
@@ -30,22 +46,6 @@
                 </a>
             </p>
         </li>
-        {% endfor %}
-    </ul>
-    <h2>
-        Pages
-    </h2>
-    <ul class="toc">
-        {% for page in pages | sort(attribute='date') %}
-        {% if not page.project %}
-        <li>
-            <p>
-                <a href="{{ page.slug }}.html">
-                    {{ page.title }}
-                </a>
-            </p>
-        </li>
-        {% endif %}
         {% endfor %}
     </ul>
     <h2>
