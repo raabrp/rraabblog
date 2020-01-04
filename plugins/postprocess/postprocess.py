@@ -16,6 +16,8 @@ What happens here:
 
 * Add some commented annotations to HTML source for debugging Katex math
 
+* Allow dynamic templating
+
 '''
 
 # assumed words per minute reading speed
@@ -116,10 +118,15 @@ def process_soup(content_object):
 
     soup = BeautifulSoup(content_object._content, 'html.parser')
 
-    # distinguish pages from projects
-    setattr(content_object, 'project', (
-        'projects' in content_object.source_path.split(os.sep)
-    ))
+    # distinguish types of pages by subdirectory
+    # and allow dynamic templates
+    folder = content_object.source_path.split(os.sep)[-2]
+    setattr(content_object, 'folder', folder)
+
+    if folder in [x.split('.')[0] for x in os.listdir(
+            os.path.join(content_object.settings['THEME'], 'templates')
+    )]:
+        setattr(content_object, 'template', folder)
 
     # last_updated formatting
     if hasattr(content_object, 'last_updated'):
@@ -296,7 +303,7 @@ def process_soup(content_object):
 """
     )
 
-    # optionally password protect drafts
+    # optionally password protect and de-list pages
     if hasattr(content_object, 'password'):
         encrypt(content_object, soup)
     else:

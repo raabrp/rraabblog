@@ -1,3 +1,4 @@
-* Mathbox integration
-* Spelling/grammar/pomposity checking of content
-* Broken links detection
+fontawesome
+Broken links detection
+Spelling and grammar check
+Mathbox integration

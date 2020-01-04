@@ -28,7 +28,10 @@ JS.eval_block(
     r'''
     katex = require('katex');
     function render(s, is_block) {
-      return katex.renderToString(s, { displayMode: is_block });
+      return katex.renderToString(s, {
+        displayMode: is_block,
+        throwOnError: false
+      });
     }
     '''
 )

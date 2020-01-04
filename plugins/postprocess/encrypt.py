@@ -2,6 +2,8 @@
 allow password-protection of drafts
 '''
 
+import hashlib
+import platform
 from base64 import b64encode
 
 from bs4 import BeautifulSoup
@@ -15,7 +17,20 @@ def encrypt(content_object, soup):
     works by applying side-effects to content_object
     '''
 
+    # will not be listed in index
     content_object.status = 'draft'
+
+    # new slug is hash( hash(old_slug) XOR hash(hostname) )
+    old_slug = content_object.slug
+    hostname = platform.node()
+    slug = hashlib.md5(
+        b''.join(
+            [int.to_bytes(a ^ b, 1, 'little') for (a, b) in zip(
+                hashlib.md5(old_slug.encode()).digest(),
+                hashlib.md5(platform.node().encode()).digest()
+            )])
+    ).hexdigest()
+    content_object.slug = slug
 
     # https://github.com/MaxLaumeister/clientside-html-password/blob/master/python/encrypt.py
     plaintext = soup.decode() + u"""
@@ -54,13 +69,15 @@ def encrypt(content_object, soup):
 <p>This draft is password protected before publication.</p>
 <input id="pass" type="password" name="pass">
 <button id="submitPass" type="button">Submit</button>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/pbkdf2.js"></script>
+<!-- From https://cdnjs.com/libraries/crypto-js -->
+<script src="theme/js/lib/cryptojs_aes.js"></script>
+<script src="theme/js/lib/cryptojs_pbkdf2.js"></script>
 <!--
 Code adapted from https://github.com/MaxLaumeister/clientside-html-password
 -->
 <script type="text/javascript">
 
+    // delays all onReady calls.
     clearToEngage = false;
 
     var encrypted_content = CryptoJS.enc.Base64.parse("{data}");
@@ -137,6 +154,8 @@ Code adapted from https://github.com/MaxLaumeister/clientside-html-password
     }}
 
     submitPass.onclick = decrypt;
+
+    document.getElementById('pass').focus();
 
 </script>
 </div>

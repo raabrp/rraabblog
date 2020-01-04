@@ -114,7 +114,7 @@
                   <a href="/">Home</a>
                 </li>
                 {% for page in pages %}
-                {% if not page.project %}
+                {% if page.folder == "pages" %}
                 <li>
                   <a href="{{ page.slug }}.html">
                     {{ page.title | truncate(25) }}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block content %}
+<header>
+    <h1 id="title-header">
+        {{ page.title }}
+    </h1>
+    <p>
+        Estimated read time: {{ page.readtime.minutes }} minutes
+    </p>
+    <p>
+        Publish Date: {{ page.date.strftime('%Y %B %d') }} <br><br>
+        Last Updated: {{ page.last_updated.strftime('%Y %B %d') }}
+    </p>
+</header>
+<article>
+    {{ page.content }}
+</article>
+
+<a href="/{{ page.slug }}.text">View Markdown Source</a>
+{% endblock %}

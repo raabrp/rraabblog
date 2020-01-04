@@ -13,12 +13,13 @@
     </h1>
 </header>
 <article class="index">
+
     <h2>
         Pages
     </h2>
     <ul class="toc">
-        {% for page in pages | sort(attribute='date') %}
-        {% if not page.project %}
+        {% for page in pages | sort(attribute='title') %}
+        {% if page.folder == "pages" %}
         <li>
             <p>
                 <a href="{{ page.slug }}.html">
@@ -29,31 +30,32 @@
         {% endif %}
         {% endfor %}
     </ul>
+
     <h2>
-        Posts
+        Public Thoughts
     </h2>
     <ul class="toc">
-        {% for article in articles | sort(attribute='date') %}
+        {% for page in pages | sort(attribute='date', reverse=True) %}
+        {% if page.folder == "articles" %}
         <li>
             <p>
-                <!--
-                     <span style="font-family: monospace;">
-                     ({{ article.date.strftime('%Y %b %d') }})
-                     </span>
-                -->
-                <a href="{{ article.slug }}.html">
-                    {{ article.title }}
+                <a href="{{ page.slug }}.html">
+                    <span style="font-family: monospace; color: var(--w0);">
+                    [{{ page.date.strftime('%b %Y') }}]
+                    </span>
+                    {{ page.title }}
                 </a>
             </p>
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
     <h2>
-        Projects
+        For fun
     </h2>
     <ul class="toc">
-        {% for page in pages | sort(attribute='date') %}
-        {% if page.project %}
+        {% for page in pages | sort(attribute='title') %}
+        {% if page.folder == "projects" %}
         <li>
             <p>
                 <a href="{{ page.slug }}.html">

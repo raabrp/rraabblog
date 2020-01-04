@@ -16,9 +16,6 @@ What happens here:
 
 '''
 
-# TODO caching
-# https://docs.getpelican.com/en/stable/settings.html
-
 import os
 import sys
 import json
@@ -49,7 +46,7 @@ STATIC_PATHS = ['images', 'hosted', 'js', 'css']
 IGNORE_FILES = ['.#*', '__pycache__']
 
 # theme directory
-# Expected to have `templates` and `static` subdirectories
+# Expected to have `templates` and `static` subdirectories :(
 THEME = 'theme'
 
 # output directory
@@ -59,6 +56,13 @@ OUTPUT_PATH = 'public'
 PLUGIN_PATHS = ["plugins"]
 # Plugin lists
 PLUGINS = ["postprocess"]
+
+# Caching
+# CACHE_CONTENT = True
+# LOAD_CONTENT_CACHE = True
+# CACHE_PATH = 'cache'
+# CHECK_MODIFIED_METHOD = 'md5'
+# CONTENT_CACHING_LAYER = 'generator'
 
 ###############################################################################
 # Optional Config
@@ -93,7 +97,7 @@ MARKDOWN = {
 SLUGIFY_SOURCE = 'slug'
 ARTICLE_SAVE_AS = '{slug}.html'
 PAGE_SAVE_AS = '{slug}.html'
-DRAFT_SAVE_AS = '{slug}.html'
+DRAFT_PAGE_SAVE_AS = '{slug}.html'
 
 # Suppress Categories and Tags
 CATEGORY_SAVE_AS = ''
@@ -103,7 +107,7 @@ FEEDS_SAVE_AS = ''
 
 # These templates render directly as independent output
 # DIRECT_TEMPLATES = ['index', 'links'] # 'links' lists all external links
-DIRECT_TEMPLATES = ['index']
+DIRECT_TEMPLATES = ['index', 'private']
 
 # Suppress unused utilities which Pelican provides
 FEED_ALL_ATOM = None

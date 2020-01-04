@@ -36,7 +36,7 @@
             Context
         </th>
         </tr>
-        {% for a in (articles + pages) | sum(attribute='links', start=[]) |
+        {% for a in pages | sum(attribute='links', start=[]) |
                                          sort(attribute='domain') %}
         <tr>
             <td>
