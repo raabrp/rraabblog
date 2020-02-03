@@ -3,6 +3,7 @@
 
 Preprocessor for Markdown handling d3
 
+ * Allow Macros!
  * Allow nicer way to make d3 charts (using /theme/static/js/charts.js)
    which offers some nice utilities.
 
@@ -16,6 +17,7 @@ How it happens:
 
 import re
 import json
+import time
 
 from bs4 import BeautifulSoup
 
@@ -25,7 +27,11 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
 
     def run(self, lines):
 
+        start = time.time()
+
         processed = []
+
+        unwrap = False
 
         # wrap script, div, and twgl tags in div tags
         for line in lines:
@@ -50,8 +56,20 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
                 '</script></div>'
             )
 
-            processed.append(line)
+            setunwrap = line.endswith('\\')
+            if not unwrap:
+                if not setunwrap:
+                    processed.append(line)
+                else:
+                    processed.append(line[:-1])
+            else:
+                if not setunwrap:
+                    processed[-1] = processed[-1] + line
+                else:
+                    processed[-1] = processed[-1] + line[:-1]
+            unwrap = setunwrap
 
+        print(round(time.time() - start, 2), "seconds in preprocessing")
         return processed
 
 class Custom(markdown.Extension):

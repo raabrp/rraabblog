@@ -19,5 +19,7 @@
     {{ page.content }}
 </article>
 
+{% if page.status != "draft" %}
 <a href="/{{ page.slug }}.text">View Markdown Source</a>
+{% endif %}
 {% endblock %}

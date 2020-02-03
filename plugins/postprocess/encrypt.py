@@ -4,6 +4,7 @@ allow password-protection of drafts
 
 import hashlib
 import platform
+import time
 from base64 import b64encode
 
 from bs4 import BeautifulSoup
@@ -12,10 +13,12 @@ from pbkdf2 import PBKDF2
 from Crypto import Random
 from Crypto.Cipher import AES
 
-def encrypt(content_object, soup):
+def encrypt(content_object, plaintext):
     '''
     works by applying side-effects to content_object
     '''
+
+    start = time.time()
 
     # will not be listed in index
     content_object.status = 'draft'
@@ -33,7 +36,7 @@ def encrypt(content_object, soup):
     content_object.slug = slug
 
     # https://github.com/MaxLaumeister/clientside-html-password/blob/master/python/encrypt.py
-    plaintext = soup.decode() + u"""
+    plaintext = plaintext + u"""
 <script type=text/javascript>
     document.getElementsByTagName("title")[0].innerHTML=("{0}");
     document.getElementById("title-header").innerHTML=("{0}");
@@ -170,3 +173,4 @@ Code adapted from https://github.com/MaxLaumeister/clientside-html-password
     content_object.title = "[Encrypted]"
     content_object._content = cryptosoup.decode()
 
+    print(round(time.time() - start, 2), "seconds encrypting")

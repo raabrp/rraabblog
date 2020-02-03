@@ -34,6 +34,8 @@ AUTHOR = 'Reilly Raab'
 TIMEZONE = 'UTC'
 DEFAULT_LANG = 'en'
 
+caching = True
+
 ###############################################################################
 # PATHS
 
@@ -58,11 +60,13 @@ PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["postprocess"]
 
 # Caching
-# CACHE_CONTENT = True
-# LOAD_CONTENT_CACHE = True
-# CACHE_PATH = 'cache'
-# CHECK_MODIFIED_METHOD = 'md5'
-# CONTENT_CACHING_LAYER = 'generator'
+if caching:
+    WITH_FUTURE_DATES = False
+    CACHE_CONTENT = True
+    LOAD_CONTENT_CACHE = True
+    CACHE_PATH = 'cache'
+    CHECK_MODIFIED_METHOD = 'md5'
+    CONTENT_CACHING_LAYER = 'generator'
 
 ###############################################################################
 # Optional Config

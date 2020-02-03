@@ -27,6 +27,7 @@ import os
 import re
 import math
 import datetime
+import time
 import sys, traceback, io
 
 from bs4 import BeautifulSoup
@@ -39,6 +40,7 @@ from .encrypt import encrypt
 from .d3 import d3
 from .twgl import twgl
 from .mol import molecule
+from .dict_replace import dict_replace
 
 
 BELL = '\u0007' # terminal bell
@@ -56,6 +58,7 @@ def independent_traceback(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
+            print(args[0].source_path)
             with io.StringIO() as mock_stdout:
                 traceback.print_exception(*sys.exc_info(), file=mock_stdout)
                 sys.stderr.write(mock_stdout.getvalue())
@@ -113,6 +116,9 @@ def get_context_string(content_object, target):
 
 @independent_traceback
 def process_soup(content_object):
+
+    start = time.time()
+
     if content_object._content is None:
         return
 
@@ -215,18 +221,29 @@ def process_soup(content_object):
     # prettify the math items
     for math_item in soup.find_all(attrs={'class': 'math'}):
 
-        lvl = 0
-
         # white space must be respected, and getting around it with
         # comments for nice indentation looks ugly in the debugger
-        transformed = math_item.decode()
+        orig = math_item.decode()
 
-        tex = math_item.find('annotation').get_text()
+        if math_item.find('annotation'):
+            tex = math_item.find('annotation').get_text()
 
-        math_item.replaceWith(BeautifulSoup(
-            '\n<!--' + tex + '-->\n' + transformed + '\n',
-            'html.parser')
-        )
+            math_item.replaceWith(BeautifulSoup(
+                '\n<!--' + tex + '-->\n' + orig + '\n',
+                'html.parser')
+            )
+
+        # better errors
+        elif math_item.find(attrs={'class': 'katex-error'}):
+            err_span = math_item.find(attrs={'class': 'katex-error'})
+
+            err_msg = err_span.attrs['title']
+
+            err_span.replaceWith(BeautifulSoup(
+                '<span class="katex-error" style="color: var(--e1)">' +
+                err_msg + '</span>',
+                'html.parser')
+            )
 
     # rainbow parentheses for codehilite
     for code in soup.find_all('div', {'class': 'codehilite'}):
@@ -303,8 +320,23 @@ def process_soup(content_object):
 """
     )
 
+    plaintext = soup.decode()
+
+    # Fix paragraph endings following Katex
+    plaintext = dict_replace(plaintext, {
+        '\n.': '.',
+        '\n,': ',',
+        '\n!': '!',
+        '\n-': '-',
+        '\n:': ':',
+        '\n;': ';',
+        '\n?': '?',
+        '\n)': ')'
+    })
+
+    print(round(time.time() - start, 2), 'seconds in post-processing')
     # optionally password protect and de-list pages
     if hasattr(content_object, 'password'):
-        encrypt(content_object, soup)
+        encrypt(content_object, plaintext)
     else:
-        content_object._content = soup.decode()
+        content_object._content = plaintext

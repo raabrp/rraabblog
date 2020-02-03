@@ -23,6 +23,8 @@ from markdown.util import etree
 
 import bond
 
+import time
+
 JS = bond.make_bond('JavaScript')
 JS.eval_block(
     r'''
@@ -37,6 +39,8 @@ JS.eval_block(
 )
 katex = JS.callable('render')
 
+memoise = {}
+
 ###############################################################################
 
 class MathPattern(markdown.inlinepatterns.Pattern):
@@ -46,12 +50,25 @@ class MathPattern(markdown.inlinepatterns.Pattern):
         self.tag = tag
 
     def handleMatch(self, m):
+        global memoise
+        global counter
+
         node = markdown.util.etree.Element(self.tag)
         node.set('class', 'math')
 
         orig = m.group('math')
 
-        node.text = katex(orig, self.tag == 'div')
+        entry = (orig, self.tag == 'div')
+
+        if entry in memoise:
+            result = memoise[entry]
+        else:
+            start = time.time()
+            result = katex(orig, self.tag == 'div')
+            # print(round(time.time() - start, 2), 'in Katex')
+            memoise[entry] = result
+
+        node.text = result
 
         return node
 
