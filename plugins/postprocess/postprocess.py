@@ -26,8 +26,8 @@ WPM = 230.0 # http://en.wikipedia.org/wiki/Words_per_minute
 import os
 import re
 import math
-import datetime
 import time
+import datetime
 import sys, traceback, io
 
 from bs4 import BeautifulSoup
@@ -334,7 +334,9 @@ def process_soup(content_object):
         '\n)': ')'
     })
 
-    print(round(time.time() - start, 2), 'seconds in post-processing')
+    print(datetime.datetime.now().strftime("%H:%M:%S.%f"), round(time.time() - start, 2), 'seconds in post-processing')
+    print()
+
     # optionally password protect and de-list pages
     if hasattr(content_object, 'password'):
         encrypt(content_object, plaintext)

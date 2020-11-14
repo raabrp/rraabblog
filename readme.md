@@ -60,18 +60,6 @@ post on why `sudo npm` is worth avoiding (and how to not need it).
 
 ## Installation
 
-For me (using Linux and assuming `pip3` and `npm` commands are available):
-
-* Install requirements
-
-        pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
-        pip3 install --user pbkdf2 pycrypto
-        npm install -g katex light-server
-
-    Personal note: I had to make sure to include
-        `~/.local/bin` in my PATH and set
-        `/usr/lib/node_modules/` as my NODE_PATH
-
 * Fork and clone the repo
 
     * [Fork](https://github.com/login?return_to=%2Fraabrp%2Frraabblog) this repo.
@@ -79,6 +67,26 @@ For me (using Linux and assuming `pip3` and `npm` commands are available):
     * Clone the repo locally
     
             git clone <URL-of-forked-repo>
+            cd rraabblog
+
+* Install requirements
+
+With pip:
+
+        pip3 install --user pelican markdown beautifulsoup4 python-bond pygments
+        pip3 install --user pbkdf2 pycrypto
+        
+Alternativel, with conda:
+
+        conda update -n base -c defaults conda
+        conda env create -f environment.yml
+        direnv allow .
+
+Then install node.js packages
+
+        npm install -g katex light-server
+
+Personal note: I had to make sure to include `~/.local/bin` in my PATH and set `/usr/lib/node_modules/` as my NODE_PATH
 
 * Make `run.sh` executable
 

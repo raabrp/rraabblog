@@ -1,0 +1,16 @@
+# environment.yml
+
+name:
+  blog
+channels:
+  - base
+dependencies:
+  - python>=3.8
+  - pygments
+  - beautifulsoup4
+  - pbkdf2
+  - pycrypto
+  - markdown
+  - pip:
+    - pelican
+    - python-bond

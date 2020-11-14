@@ -113,7 +113,7 @@
                 <li>
                   <a href="/">Home</a>
                 </li>
-                {% for page in pages %}
+                {% for page in pages | sort(attribute='title') %}
                 {% if page.folder == "pages" %}
                 <li>
                   <a href="{{ page.slug }}.html">

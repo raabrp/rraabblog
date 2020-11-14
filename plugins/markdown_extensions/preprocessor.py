@@ -18,6 +18,7 @@ How it happens:
 import re
 import json
 import time
+import datetime
 
 from bs4 import BeautifulSoup
 
@@ -69,7 +70,7 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
                     processed[-1] = processed[-1] + line[:-1]
             unwrap = setunwrap
 
-        print(round(time.time() - start, 2), "seconds in preprocessing")
+        print(datetime.datetime.now().strftime("%H:%M:%S.%f"), round(time.time() - start, 2), "seconds in preprocessing")
         return processed
 
 class Custom(markdown.Extension):
