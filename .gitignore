@@ -4,3 +4,5 @@ drafts
 cache
 content
 public
+node_modules
+package-lock.json

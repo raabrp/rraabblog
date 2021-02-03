@@ -6,11 +6,13 @@ channels:
   - base
 dependencies:
   - python>=3.8
+  - ipython
   - pygments
   - beautifulsoup4
   - pbkdf2
   - pycrypto
   - markdown
+  - pip
   - pip:
     - pelican
     - python-bond

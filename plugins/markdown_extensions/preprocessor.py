@@ -32,8 +32,6 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
 
         processed = []
 
-        unwrap = False
-
         # wrap script, div, and twgl tags in div tags
         for line in lines:
 
@@ -57,18 +55,21 @@ class Preprocessor(markdown.preprocessors.Preprocessor):
                 '</script></div>'
             )
 
-            setunwrap = line.endswith('\\')
-            if not unwrap:
-                if not setunwrap:
-                    processed.append(line)
-                else:
-                    processed.append(line[:-1])
-            else:
-                if not setunwrap:
-                    processed[-1] = processed[-1] + line
-                else:
-                    processed[-1] = processed[-1] + line[:-1]
-            unwrap = setunwrap
+            # escape newlines
+            # unwrap = False
+            # hasnewline = line.endswith('\\')
+            # if not unwrap:
+            #     if not hasnewline:
+            #         processed.append(line)
+            #     else:
+            #         processed.append(line[:-1])
+            # else:
+            #     if not hasnewline:
+            #         processed[-1] = processed[-1] + line
+            #     else:
+            #         processed[-1] = processed[-1] + line[:-1]
+            # unwrap = hasnewline
+            processed.append(line)
 
         print(datetime.datetime.now().strftime("%H:%M:%S.%f"), round(time.time() - start, 2), "seconds in preprocessing")
         return processed

@@ -34,7 +34,7 @@ AUTHOR = 'Reilly Raab'
 TIMEZONE = 'UTC'
 DEFAULT_LANG = 'en'
 
-caching = False
+caching = True
 
 ###############################################################################
 # PATHS

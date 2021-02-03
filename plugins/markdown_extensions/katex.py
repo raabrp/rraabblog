@@ -75,7 +75,7 @@ class Katex(markdown.Extension):
         math_inline_regex = \
             r'(?P<prefix>\$)(?P<math>.+?)(?P<suffix>(?<!\s)\2)'
         math_block_regex = \
-            r'(?P<prefix>\$\$|\\begin\{(.+?)\})(?P<math>.+?)(?P<suffix>\2|\\end\{\3\})'
+            r'(?P<prefix>\$\$|\\begin\{(.+?)\}|\\\[)(?P<math>.+?)(?P<suffix>\2|\\end\{\3\}|\\\])'
 
         # Process math before escapes are processed since escape processing
         # will interfere. The order in which the displayed and inlined math
