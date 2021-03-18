@@ -31,6 +31,11 @@ sys.path.append(
 import markdown_extensions
 
 AUTHOR = 'Reilly Raab'
+SITE_DESCRIPTION = (
+    'This site is a space for me to share my interest in various subjects, ' +
+    'publish personal essays, ' +
+    'and communicate about projects or developments which are important to me.'
+)
 TIMEZONE = 'UTC'
 DEFAULT_LANG = 'en'
 

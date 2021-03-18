@@ -2,6 +2,12 @@
 
 {% block title %}{{ page.title }}{% endblock title %}
 
+{% block meta %}
+{% if page.summary %}
+    <meta name="description" content="{{ page.summary|striptags }}"/>
+{% endif %}
+{% endblock meta %}
+
 {% block style %}
 <link rel="stylesheet" type="text/css" href="theme/css/page.css">
 {% endblock style %}

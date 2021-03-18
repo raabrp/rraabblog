@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block meta %}
+{% if SITE_DESCRIPTION %}
+    <meta name="description" content="{{ SITE_DESCRIPTION }}"/>
+{% endif %}
+{% endblock meta %}
+
 {% block title %}{{ AUTHOR }}{% endblock title %}
 
 {% block style %}
