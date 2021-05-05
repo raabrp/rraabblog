@@ -15,7 +15,11 @@
 {% block content %}
 <header>
     <h1 id="title-header">
+        {% if page.title_header is defined %}
+        {{ page.title_header }}
+        {% else %}
         {{ page.title }}
+        {% endif %}
     </h1>
 </header>
 <article>

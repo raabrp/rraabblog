@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block meta %}
-{% if article.summary %}
-    <meta name="description" content="{{ article.summary|striptags }}"/>
+
+{% if page.summary is defined %}
+    <meta name="description" content="{{ page.summary }}"/>
 {% endif %}
+
 {% endblock meta %}
 
 {% block title %}{{ page.title }}{% endblock title %}

@@ -38,7 +38,7 @@
     </ul>
 
     <h2>
-        Public Thoughts
+        Articles
     </h2>
     <ul class="toc">
         {% for page in pages | sort(attribute='date', reverse=True) %}
@@ -46,9 +46,7 @@
         <li>
             <p>
                 <a href="{{ page.slug }}.html">
-                    <span style="font-family: monospace; color: var(--w0);">
-                    [{{ page.date.strftime('%b %Y') }}]
-                    </span>
+                    <code>{{ page.date.strftime('%b %Y') }}</code>
                     {{ page.title }}
                 </a>
             </p>
@@ -57,7 +55,7 @@
         {% endfor %}
     </ul>
     <h2>
-        For fun
+        Other
     </h2>
     <ul class="toc">
         {% for page in pages | sort(attribute='title') %}
